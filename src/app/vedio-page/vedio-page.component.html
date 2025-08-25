@@ -1,0 +1,7 @@
+<h2>Video Page</h2>
+<p>Lesson ID: {{ lessonId }}</p>
+
+<video *ngIf="lesson?.videoUrl" controls width="600">
+  <source [src]="lesson.videoUrl" type="video/mp4" />
+  Your browser does not support video playback.
+</video>

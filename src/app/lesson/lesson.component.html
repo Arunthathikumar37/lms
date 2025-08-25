@@ -1,0 +1,108 @@
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+  <div class="search-container">
+    <input nbInput class="search-bar" placeholder="Search lessons..."
+           [(ngModel)]="searchTerm" (ngModelChange)="updateFilter()" name="searchTerm"/>
+  </div>
+  <button nbButton status="primary" (click)="addLesson()">+ Add Lesson</button>
+</div>
+
+<!-- Add/Edit Lesson Popup --> <!-- NEW: Centered popup -->
+<div class="popup-overlay" *ngIf="showForm">
+  <div class="popup-form">
+    <h2>{{ editingLesson ? 'Edit Lesson' : 'Add Lesson' }}</h2>
+
+    <!-- Lesson Type Dropdown --> <!-- NEW -->
+    <label>Lesson Type*</label>
+    <select nbInput fullWidth [(ngModel)]="lessonData.type" name="type">
+      <option value="Video">Video</option>
+      <option value="Document">Document</option>
+    </select>
+
+    <!-- Conditional File Upload --> <!-- NEW -->
+    <label *ngIf="lessonData.type === 'Video'">Upload Video*</label>
+    <input *ngIf="lessonData.type === 'Video'" type="file" accept="video/*" (change)="onFileSelected($event, 'video')" />
+
+    <label *ngIf="lessonData.type === 'Document'">Upload Document*</label>
+    <input *ngIf="lessonData.type === 'Document'" type="file" accept="application/pdf,.doc,.docx" (change)="onFileSelected($event, 'document')" />
+
+    <!-- Lesson Image -->
+    <label>Lesson Image</label>
+    <input type="file" (change)="onFileSelected($event, 'image')" />
+
+    <!-- Title -->
+    <label>Title*</label>
+    <input nbInput fullWidth placeholder="Enter Title" [(ngModel)]="lessonData.title" name="title" />
+
+    <!-- Description -->
+    <label>Description*</label>
+    <textarea nbInput fullWidth rows="3" [(ngModel)]="lessonData.description" name="description"></textarea>
+
+    <!-- Optional Attachments -->
+    <label>Attachments (Optional)</label>
+    <input type="file" multiple (change)="onFileSelected($event, 'attachments')" />
+
+    <!-- Summary -->
+    <label>Summary</label>
+    <input nbInput fullWidth [(ngModel)]="lessonData.summary" name="summary" />
+
+    <!-- Duration -->
+    <label>Duration (minutes)*</label>
+    <input nbInput type="number" fullWidth [(ngModel)]="lessonData.duration" name="duration" />
+
+    <!-- Order Index -->
+    <label>Order Index*</label>
+    <input nbInput type="number" fullWidth [(ngModel)]="lessonData.orderIndex" name="orderIndex" />
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button nbButton status="basic" (click)="cancel()">Cancel</button>
+      <button nbButton status="success" (click)="saveLesson()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lessons List -->
+<div class="lessons-container">
+  <nb-card *ngFor="let lesson of filteredLessons" class="lesson-card">
+    <div class="badge" [ngClass]="lesson.type.toLowerCase()">{{ lesson.type }}</div>
+    <nb-card-header>
+      <img *ngIf="lesson.image" [src]="lesson.image" class="lesson-image" />
+    </nb-card-header>
+    <nb-card-body>
+      <h5>{{ lesson.title }}</h5>
+      <p>{{ lesson.description }}</p>
+      <div class="lesson-meta">
+        <nb-icon *ngIf="lesson.type === 'Video'" icon="video-outline" class="tiny-icon"></nb-icon>
+        <nb-icon *ngIf="lesson.type === 'Document'" icon="book-outline" class="tiny-icon"></nb-icon>
+        <span>Lesson {{ lesson.orderIndex }} • {{ lesson.duration }} min</span>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="footer-actions">
+      <button nbButton ghost status="primary" (click)="editLesson(lesson)">
+        <nb-icon icon="edit-2-outline" class="tiny-icon"></nb-icon>
+      </button>
+      <button nbButton ghost status="danger" (click)="confirmDelete(lesson)">
+        <nb-icon icon="trash-2-outline" class="tiny-icon"></nb-icon>
+      </button>
+      <button nbButton ghost status="basic" *ngIf="lesson.type === 'Video'" (click)="playLessonVideo(lesson)">
+        <nb-icon icon="play-circle-outline" class="tiny-icon"></nb-icon>
+      </button>
+      <button nbButton ghost status="basic" *ngIf="lesson.type === 'Document'" (click)="openLessonDocument(lesson)">
+        <nb-icon icon="file-text-outline" class="tiny-icon"></nb-icon>
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</div>
+
+<!-- Delete Confirmation Popup --> <!-- NEW -->
+<div class="popup-overlay" *ngIf="showDeleteConfirm">
+  <div class="popup-form delete">
+    <h2>Confirm Delete</h2>
+    <p>Are you sure you want to delete "<b>{{ lessonToDelete?.title }}</b>"?</p>
+    <div class="actions">
+      <button nbButton status="basic" (click)="cancelDelete()">Cancel</button>
+      <button nbButton status="danger" (click)="deleteLesson()">Delete</button>
+    </div>
+  </div>
+</div>

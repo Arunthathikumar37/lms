@@ -3,12 +3,13 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "lms": {
+    "lms1": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "standalone": false
-        },"@schematics/angular:directive": {
+        },
+        "@schematics/angular:directive": {
           "standalone": false
         },
         "@schematics/angular:pipe": {
@@ -22,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/lms",
+            "outputPath": "dist/lms1",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -35,7 +36,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
+            "styles": [ "node_modules/@nebular/theme/styles/prebuilt/default.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -68,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "lms:build:production"
+              "buildTarget": "lms1:build:production"
             },
             "development": {
-              "buildTarget": "lms:build:development"
+              "buildTarget": "lms1:build:development"
             }
           },
           "defaultConfiguration": "development"
