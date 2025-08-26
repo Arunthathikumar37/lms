@@ -140,33 +140,39 @@
         <span>Lesson {{ lesson.orderIndex }} • {{ lesson.duration }} min</span>
       </div>
     </nb-card-body>
-    <nb-card-footer class="footer-actions">
+<nb-card-footer class="footer-actions">
 
+  <!-- Play Video -->
+  <button nbButton class="icon-only" *ngIf="lesson.type === 'Video'" 
+          (click)="playLessonVideo(lesson)"
+          data-tooltip="play video"> <!-- ✅ Proper tooltip -->
+    <nb-icon icon="play-circle-outline" class="tiny-icon3"></nb-icon>
+  </button>
 
-      <button nbButton class="icon-only" *ngIf="lesson.type === 'Video'" 
-        (click)="playLessonVideo(lesson)">
-  <nb-icon icon="play-circle-outline" class="tiny-icon3"></nb-icon>
-</button>
+  <!-- Open Document -->
+  <button nbButton class="icon-only"
+          *ngIf="lesson.type === 'Document'"
+          (click)="openLessonDocument(lesson)"
+          data-tooltip="Open Document"> <!-- ✅ Proper tooltip -->
+    <nb-icon icon="file-text-outline" class="tiny-icon4"></nb-icon>
+  </button>
 
-<button nbButton
-        class="icon-only"
-        *ngIf="lesson.type === 'Document'"
-        (click)="openLessonDocument(lesson)"
-        nbTooltip="Open Document"
-        nbTooltipClass="doc-tooltip"
-        nbTooltipPlacement="top">
-  <nb-icon icon="file-text-outline" class="tiny-icon4"></nb-icon>
-</button>
+  <!-- Edit Lesson -->
+  <button nbButton class="icon-only"
+          (click)="editLesson(lesson)"
+          data-tooltip="Edit lesson"> <!-- ✅ Proper tooltip -->
+    <nb-icon icon="edit-2-outline" class="tiny-icon1"></nb-icon>
+  </button>
 
+  <!-- Delete Lesson -->
+  <button nbButton class="icon-only"
+          (click)="confirmDelete(lesson)"
+          data-tooltip="Delete"> <!-- ✅ Proper tooltip -->
+    <nb-icon icon="trash-2-outline" class="tiny-icon2"></nb-icon>
+  </button>
 
-      
-            <button nbButton class="icon-only" (click)="editLesson(lesson)">
-        <nb-icon icon="edit-2-outline" class="tiny-icon1"></nb-icon>
-      </button>
-            <button  nbButton class="icon-only" (click)="confirmDelete(lesson)">
-        <nb-icon icon="trash-2-outline" class="tiny-icon2"></nb-icon>
-      </button>
-    </nb-card-footer>
+</nb-card-footer>
+
   </nb-card>
 </div>
 

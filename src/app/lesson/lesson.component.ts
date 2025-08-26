@@ -12,6 +12,7 @@ export type LessonData = {
   summary: string;
   duration: number | null;
   orderIndex: number;
+  documentFileName?:string
 };
 
 @Component({
@@ -170,6 +171,7 @@ openLessonDocument(lesson: LessonData) {
         else if (type === 'document') {
           this.lessonData.document = reader.result as string;
           this.lessonData.videoUrl = null;
+          this.lessonData.documentFileName = file.name; 
         } else if (type === 'video') {
           this.lessonData.videoUrl = reader.result as string;
           this.lessonData.document = null;

@@ -67,7 +67,8 @@
   height: 30px;
   border-radius: 5px;
   background-color: #f6f3f3;
-  border-color: none;
+   border: 1px solid #ccc;
+
 }
 
 /* Icon inside input */
@@ -336,6 +337,7 @@ nb-card-body p {
   vertical-align: middle;
   background-color:white;
   color:#FF3D71;
+  margin-right: 15px;
 }
 .tiny-icon3 {
   font-size: 16px;
@@ -386,10 +388,45 @@ button[nbButton].icon-only {
   margin-top: 2px;
 }
 
-
-
-/* your-component.component.css */
-::ng-deep .nb-tooltip.doc-tooltip {
-  background: #0055aa !important;
-  color: #fff !important;
+button[data-tooltip] {
+  position: relative;
 }
+
+/* Tooltip text */
+button[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%; /* position above button */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e; /* dark background */
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+/* Tooltip arrow */
+button[data-tooltip]::before {
+  content: "";
+  position: absolute;
+  bottom: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #1a1a2e transparent transparent transparent;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* Show tooltip on hover */
+button[data-tooltip]:hover::after,
+button[data-tooltip]:hover::before {
+  opacity: 1;
+}
+
