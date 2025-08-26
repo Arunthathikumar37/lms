@@ -23,34 +23,69 @@
 /* === Dashboard Header === */
 .dashboard-header {
   display: flex;
+   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 10px;
   padding-top: 10px;
+  
 }
 
 /* === Search Box === */
+/* Outer container with gray background */
 .search-container {
-  flex: 1;
-  min-width: 250px;
-}
-.search-bar {
-  width: 95%;
-  margin-top: 30px;
-  padding: 12px 16px;
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  background:white;   /* light gray background */
   border-radius: 0px;
-  border: 1px solid #dcdcdc;
-  box-sizing: border-box;
-  margin-left: 10px;
-  background-color: white;
+  padding: 10px 1100px 10px 10px;
 }
-.search-bar:focus {
-  border-color:white;
-  outline: none;
+
+/* Label with white background */
+.search-label {
+      
+  padding: 6px 10px;
+  border-radius: 0px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;   /* keep text in one line */
 }
+
+/* Input wrapper */
+.search-input-wrapper {
+  position: relative;
+  flex: 1; /* takes remaining space */
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding-right: 10px; /* space for icon */
+  height: 30px;
+  border-radius: 5px;
+  background-color: #f6f3f3;
+  border-color: none;
+}
+
+/* Icon inside input */
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5a6c7a;
+
+  /* 🔥 Control size here */
+  width: 14px;
+  height: 14px;
+
+  pointer-events: none;
+}
+
+
 
 /* === Dashboard Button === */
 .dashboard-header button {
@@ -60,12 +95,13 @@
   color: #fff;
   padding: 10px 18px;
   font-size: 14px;
-  margin-top: 30px;
+  margin-top: 01px;
   white-space: nowrap;
   border-color: #3366ff ;
   transition: background 0.2s;
-  margin-right: 20px;
+  margin-left: 1370px;
 }
+  
 .dashboard-header button:hover {
   background-color: #274bdb;
 }
@@ -246,7 +282,7 @@
   text-transform: capitalize;
 }
 .badge.video { background: #ff3d71; }
-.badge.document { background: #00d68f; }
+.badge.document { background: #ff3d71; }
 
 /* Card Body */
 nb-card-body {
@@ -270,7 +306,7 @@ nb-card-body p {
 .lesson-meta {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   margin-top: 8px;
   font-size: 13px;
   color: #666;
@@ -280,6 +316,42 @@ nb-card-body p {
   height: 16px;
   width: 16px;
   vertical-align: middle;
+  background-color:white;
+  color:rgb(185, 178, 178)
+}
+.tiny-icon1 {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  background-color:white;
+  color:#FFAA00;
+
+}
+
+.tiny-icon2 {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  background-color:white;
+  color:#FF3D71;
+}
+.tiny-icon3 {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  background-color:white;
+  color:#8F9BB3;
+}
+.tiny-icon4 {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  background-color:white;
+  color:#8F9BB3;
 }
 
 /* Footer Actions */
@@ -290,7 +362,7 @@ nb-card-body p {
   padding: 6px 10px;
   background: white;
   border-top: 1px solid #eee;
-  gap: 8px;
+  gap: 20px;
 }
 .footer-actions button {
   padding: 4px 6px;
@@ -299,4 +371,25 @@ nb-card-body p {
 }
 .footer-actions button:hover {
   background: rgba(0,0,0,0.05);
+}
+
+button[nbButton].icon-only {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+
+
+/* your-component.component.css */
+::ng-deep .nb-tooltip.doc-tooltip {
+  background: #0055aa !important;
+  color: #fff !important;
 }

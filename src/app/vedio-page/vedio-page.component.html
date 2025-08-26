@@ -1,7 +1,6 @@
-<h2>Video Page</h2>
-<p>Lesson ID: {{ lessonId }}</p>
-
-<video *ngIf="lesson?.videoUrl" controls width="600">
-  <source [src]="lesson.videoUrl" type="video/mp4" />
-  Your browser does not support video playback.
-</video>
+<div *ngIf="videoUrl" class="video-player-container">
+  <h2>{{ lesson?.title }}</h2>
+  <video width="100%" height="auto" controls autoplay [src]="videoUrl"></video>
+  <p>{{ lesson?.description }}</p>
+  <button nbButton status="primary" (click)="router.navigate(['/'])">Back to Lessons</button>
+</div>

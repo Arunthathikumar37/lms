@@ -19,6 +19,7 @@ import {
   NbDialogModule,
   NbSelectModule,
   NbBadgeModule,
+  NbTooltipModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
@@ -50,6 +51,7 @@ const routes: Routes = [
     NbLayoutModule,
     NbButtonModule,
     NbInputModule,
+    NbTooltipModule,
     NbIconModule,
     NbEvaIconsModule,
     NbCardModule,

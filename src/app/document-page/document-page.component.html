@@ -1,4 +1,6 @@
-<h2>Document Page</h2>
-<p>Lesson ID: {{ lessonId }}</p>
-
-<iframe *ngIf="documentUrl" [src]="documentUrl" width="100%" height="600"></iframe>
+<div *ngIf="lesson">
+  <h2>{{ lesson.title }}</h2>
+  <video width="100%" height="auto" controls autoplay [src]="lesson.videoUrl"></video>
+  <p>{{ lesson.description }}</p>
+  <button nbButton status="primary" (click)="router.navigate(['/'])">Back to Lessons</button>
+</div>

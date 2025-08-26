@@ -1,38 +1,10 @@
-.page-container {
+.video-player-container {
   max-width: 900px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  margin: 20px auto;
   text-align: center;
 }
 
-.page-title {
-  margin-bottom: 20px;
-  font-size: 28px;
-  color: #333;
-}
-
-.video-wrapper video {
+video {
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.actions {
-  margin-top: 20px;
-}
-
-.back-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 25px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.back-btn:hover {
-  background-color: #0056b3;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }

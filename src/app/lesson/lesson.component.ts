@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-type LessonData = {
+export type LessonData = {
   type: 'Video' | 'Document';
   image: string | null;
   document: string | null;
@@ -25,14 +25,18 @@ export class LessonComponent {
   showDeleteConfirm = false;
   editingLesson = false;
   searchTerm: string = '';
-  lessons: LessonData[] = [];
+
+  // ✅ Use static array to share lessons across components
+  static lessons: LessonData[] = [];
+  lessons: LessonData[] = LessonComponent.lessons;
+
   filteredLessons: LessonData[] = [];
   lessonData: LessonData = this.getEmptyLesson();
   lessonToDelete: LessonData | null = null;
 
   constructor(private router: Router) {}
 
-  // NEW: Return a fresh empty lesson
+  // Return empty lesson
   private getEmptyLesson(): LessonData {
     return {
       type: 'Document',
@@ -48,11 +52,11 @@ export class LessonComponent {
     };
   }
 
-  // Open popup for adding new lesson
+  // Open popup to add lesson
   addLesson() {
     this.showForm = true;
     this.editingLesson = false;
-    this.lessonData = this.getEmptyLesson(); // NEW: reset form
+    this.lessonData = this.getEmptyLesson();
   }
 
   // Cancel popup
@@ -64,19 +68,20 @@ export class LessonComponent {
   saveLesson() {
     if (!this.lessonData.title.trim()) return;
 
-    // NEW: type is already selected by dropdown; ensure consistency
+    // Set type
     if (this.lessonData.videoUrl) this.lessonData.type = 'Video';
     else this.lessonData.type = 'Document';
 
-    if (this.editingLesson) {
+    if (!this.editingLesson) {
+      this.lessons.push({ ...this.lessonData });
+      LessonComponent.lessons = this.lessons; // ✅ update static array
+    } else {
       const index = this.lessons.findIndex(l => l.orderIndex === this.lessonData.orderIndex);
       if (index > -1) this.lessons[index] = { ...this.lessonData };
-    } else {
-      this.lessons.push({ ...this.lessonData });
     }
 
     this.updateFilter();
-    this.showForm = false; // close popup
+    this.showForm = false;
   }
 
   // Filter lessons dynamically
@@ -88,14 +93,14 @@ export class LessonComponent {
     );
   }
 
-  // Edit a lesson
+  // Edit lesson
   editLesson(lesson: LessonData) {
     this.lessonData = { ...lesson };
     this.editingLesson = true;
-    this.showForm = true; // open popup
+    this.showForm = true;
   }
 
-  // Delete confirmation
+  // Delete lesson
   confirmDelete(lesson: LessonData) {
     this.lessonToDelete = lesson;
     this.showDeleteConfirm = true;
@@ -109,22 +114,53 @@ export class LessonComponent {
   deleteLesson() {
     if (this.lessonToDelete) {
       this.lessons = this.lessons.filter(l => l !== this.lessonToDelete);
+      LessonComponent.lessons = this.lessons; // ✅ update static array
       this.updateFilter();
     }
     this.cancelDelete();
   }
 
-  // Navigate to video page
-  playLessonVideo(lesson: LessonData) {
-    if (lesson.videoUrl) this.router.navigate(['/video'], { state: { videoUrl: lesson.videoUrl } });
+  // ✅ Navigate to video page using ID (static array)
+playLessonVideo(lesson: LessonData) {
+  if (!lesson.videoUrl) {
+    alert('No video uploaded for this lesson!');
+    return;
   }
+
+  // Navigate to the video page with lesson orderIndex
+  this.router.navigate(['/video', lesson.orderIndex]);
+}
+
+
 
   // Navigate to document page
-  openLessonDocument(lesson: LessonData) {
-    if (lesson.document) this.router.navigate(['/document'], { state: { documentUrl: lesson.document } });
+openLessonDocument(lesson: LessonData) {
+  if (!lesson.document) {
+    alert('No document uploaded for this lesson!');
+    return;
   }
 
-  // NEW: Handle file uploads with Base64 preview
+  const base64Data = lesson.document;
+
+  // Convert Base64 to Blob
+  const byteString = atob(base64Data.split(',')[1]); // remove "data:application/pdf;base64,"
+  const mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0]; // get MIME type
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ab], { type: mimeString });
+
+  // Create a temporary URL
+  const url = URL.createObjectURL(blob);
+
+  // Open in a new tab
+  window.open(url, '_blank');
+}
+
+
+  // Handle file uploads (Base64 preview)
   onFileSelected(event: any, type: 'image' | 'document' | 'video' | 'attachments') {
     const file = event.target.files[0];
     if (file) {
