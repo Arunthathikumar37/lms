@@ -19,7 +19,7 @@ import {
   NbDialogModule,
   NbSelectModule,
   NbBadgeModule,
-  NbTooltipModule,NbOverlayModule,
+  NbTooltipModule,NbOverlayModule,NbSidebarModule, NbActionsModule,NbListModule, NbTabsetModule,NbAccordionModule,NbProgressBarModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
@@ -58,7 +58,7 @@ const routes: Routes = [
     NbCardModule,
     NbDialogModule.forRoot(),
     NbSelectModule,
-    NbBadgeModule,
+    NbBadgeModule,NbSidebarModule, NbActionsModule,NbListModule, NbTabsetModule,NbAccordionModule,NbProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],

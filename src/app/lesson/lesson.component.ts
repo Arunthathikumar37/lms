@@ -9,10 +9,16 @@ export type LessonData = {
   title: string;
   description: string;
   attachments: File[];
-  summary: string;
+  
   duration: number | null;
   orderIndex: number;
   documentFileName?:string
+    summary?: string;
+  details?: string;
+  transcript?: { time: string; text: string }[]; 
+  notes?: { text: string; time?: string }[];
+
+  
 };
 
 @Component({
@@ -26,6 +32,7 @@ export class LessonComponent {
   showDeleteConfirm = false;
   editingLesson = false;
   searchTerm: string = '';
+  
 
   // ✅ Use static array to share lessons across components
   static lessons: LessonData[] = [];
@@ -66,24 +73,27 @@ export class LessonComponent {
   }
 
   // Save lesson
-  saveLesson() {
-    if (!this.lessonData.title.trim()) return;
+saveLesson() {
+  if (!this.lessonData.title.trim()) return;
 
-    // Set type
-    if (this.lessonData.videoUrl) this.lessonData.type = 'Video';
-    else this.lessonData.type = 'Document';
+  // Set type
+  if (this.lessonData.videoUrl) this.lessonData.type = 'Video';
+  else this.lessonData.type = 'Document';
 
-    if (!this.editingLesson) {
-      this.lessons.push({ ...this.lessonData });
-      LessonComponent.lessons = this.lessons; // ✅ update static array
-    } else {
-      const index = this.lessons.findIndex(l => l.orderIndex === this.lessonData.orderIndex);
-      if (index > -1) this.lessons[index] = { ...this.lessonData };
-    }
+  // ← ADD THIS LINE
+  this.lessonData.details = this.lessonData.description;
 
-    this.updateFilter();
-    this.showForm = false;
+  if (!this.editingLesson) {
+    this.lessons.push({ ...this.lessonData });
+    LessonComponent.lessons = this.lessons; // update static array
+  } else {
+    const index = this.lessons.findIndex(l => l.orderIndex === this.lessonData.orderIndex);
+    if (index > -1) this.lessons[index] = { ...this.lessonData };
   }
+
+  this.updateFilter();
+  this.showForm = false;
+}
 
   // Filter lessons dynamically
   updateFilter() {

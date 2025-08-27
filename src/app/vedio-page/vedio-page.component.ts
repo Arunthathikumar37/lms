@@ -1,30 +1,139 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LessonComponent, LessonData } from '../lesson/lesson.component';
+
+type TranscriptLine = { time: string; text: string };
+type NoteItem = { text: string; time?: string };
+
 @Component({
   selector: 'app-vedio-page',
-  standalone: false,
   templateUrl: './vedio-page.component.html',
-  styleUrl: './vedio-page.component.css'
+  styleUrls: ['./vedio-page.component.css'],
+  standalone: false,
 })
-export class VedioPageComponent implements OnInit {
-  videoUrl: string | null = null;
-  lesson: LessonData | undefined;
+export class VedioPageComponent implements OnInit, AfterViewInit {
+  lesson: LessonData | null = null;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  safeVideoUrl: SafeResourceUrl | null = null;
+
+  // Tabs
+  selectedIndex = 0; // 0: Details, 1: Notes, 2: Summary, 3: Transcript
+
+  // Notes UI
+  noteText = '';
+  notesSearch = '';
+
+  // Side panel (right slide window)
+  sidePanelOpen = true;
+
+  @ViewChild('player') playerRef!: ElementRef<HTMLVideoElement>;
+  notes: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   ngOnInit(): void {
-    const lessonId = this.route.snapshot.paramMap.get('id');
-    if (lessonId) {
-      const index = parseInt(lessonId, 10);
-      this.lesson = LessonComponent.lessons.find(l => l.orderIndex === index);
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-      if (this.lesson && this.lesson.videoUrl) {
-        this.videoUrl = this.lesson.videoUrl;
-      } else {
-        alert('Video not found!');
-        this.router.navigate(['/']);
-      }
+    // Get lesson from shared static list
+    this.lesson = LessonComponent.lessons.find(l => l.orderIndex === id) ?? null;
+
+    if (!this.lesson) {
+      alert('Lesson not found');
+      this.router.navigate(['/']);
+      return;
+    }
+
+    // Initialize arrays
+    if (!this.lesson.transcript) this.lesson.transcript = [];
+    if (!this.lesson.notes) this.lesson.notes = [];
+
+    // ---- Add Transcript Lines Here ----
+    this.lesson.transcript.push(
+      { time: '0:05', text: 'Introduction to the topic' },
+      { time: '0:15', text: 'Explaining the first concept' },
+      { time: '0:30', text: 'Some example here' },
+      { time: '1:00', text: 'Conclusion of section 1' }
+    );
+
+    // Safe video URL
+    if (this.lesson.videoUrl) {
+      this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.lesson.videoUrl);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // no-op; playerRef becomes available here
+  }
+
+  // ---- Notes ----
+  addNote(): void {
+    if (!this.lesson || !this.noteText.trim() || !this.playerRef?.nativeElement) return;
+    const t = Math.floor(this.playerRef.nativeElement.currentTime);
+    const time = this.formatTime(t);
+    this.lesson.notes!.push({ text: this.noteText.trim(), time });
+    this.noteText = '';
+  }
+
+  get filteredNotes(): NoteItem[] {
+    if (!this.lesson?.notes) return [];
+    const term = this.notesSearch.trim().toLowerCase();
+    if (!term) return this.lesson.notes;
+    return this.lesson.notes.filter(n =>
+      (n.text || '').toLowerCase().includes(term) ||
+      (n.time || '').toLowerCase().includes(term)
+    );
+  }
+
+  jumpToTimeStr(timeStr?: string): void {
+    if (!timeStr || !this.playerRef?.nativeElement) return;
+    const [m, s] = timeStr.split(':').map(Number);
+    const sec = (m || 0) * 60 + (s || 0);
+    this.playerRef.nativeElement.currentTime = sec;
+    this.playerRef.nativeElement.play();
+  }
+
+  // ---- Transcript ----
+  pinFromTranscript(line: TranscriptLine): void {
+    if (!this.lesson) return;
+    this.lesson.notes = this.lesson.notes || [];
+    this.lesson.notes.push({ text: line.text, time: line.time });
+    this.selectedIndex = 1; // switch to notes tab
+  }
+
+  // ---- Helpers ----
+  formatTime(totalSec: number): string {
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}:${s < 10 ? '0' + s : s}`;
+  }
+
+  onTabChanged(e: any) {
+    this.selectedIndex = e.index;
+  }
+
+  panelOpen = false;
+  togglePanel() {
+    this.panelOpen = !this.panelOpen;
+  }
+onMenuClick(item: any, note: any, index: number) {
+    if (item.data.action === 'edit') {
+      console.log('Edit note:', note);
+      // put your edit logic here
+    } else if (item.data.action === 'delete') {
+      this.notes.splice(index, 1);
+    }
+  }
+
+  togglePin(note: any, index: number) {
+    note.pinned = !note.pinned;
+    if (note.pinned) {
+      this.notes.splice(index, 1);
+      this.notes.unshift(note);
     }
   }
 }
