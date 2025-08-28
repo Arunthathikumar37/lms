@@ -1,0 +1,9 @@
+/* document-page.component.css */
+.document-container {
+  margin: 20px;
+}
+iframe {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
