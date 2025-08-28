@@ -18,7 +18,8 @@ import {
   NbCardModule,
   NbDialogModule,
   NbSelectModule,
-  NbBadgeModule,
+  NbBadgeModule, NbMenuModule,NbContextMenuModule,NbPopoverModule,
+    
   NbTooltipModule,NbOverlayModule,NbSidebarModule, NbActionsModule,NbListModule, NbTabsetModule,NbAccordionModule,NbProgressBarModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -51,13 +52,13 @@ const routes: Routes = [
     NbLayoutModule,
     NbButtonModule,
     NbInputModule,
-    NbTooltipModule,
+    NbTooltipModule,NbContextMenuModule,
     NbIconModule,
     NbOverlayModule,
-    NbEvaIconsModule,
+    NbEvaIconsModule,NbMenuModule,
     NbCardModule,
     NbDialogModule.forRoot(),
-    NbSelectModule,
+    NbSelectModule,NbPopoverModule,
     NbBadgeModule,NbSidebarModule, NbActionsModule,NbListModule, NbTabsetModule,NbAccordionModule,NbProgressBarModule
   ],
   providers: [],

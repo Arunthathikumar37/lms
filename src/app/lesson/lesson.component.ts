@@ -8,7 +8,7 @@ export type LessonData = {
   videoUrl: string | null;
   title: string;
   description: string;
-  attachments: File[];
+  // attachments: File[];
   
   duration: number | null;
   orderIndex: number;
@@ -17,6 +17,8 @@ export type LessonData = {
   details?: string;
   transcript?: { time: string; text: string }[]; 
   notes?: { text: string; time?: string }[];
+attachments?: { name: string; data: string }[]; 
+
 
   
 };
@@ -172,22 +174,49 @@ openLessonDocument(lesson: LessonData) {
 
 
   // Handle file uploads (Base64 preview)
-  onFileSelected(event: any, type: 'image' | 'document' | 'video' | 'attachments') {
-    const file = event.target.files[0];
-    if (file) {
+// Add/Update inside LessonComponent class
+onFileSelected(event: any, type: 'image' | 'document' | 'video' | 'attachments') {
+  const files: FileList = event.target.files;
+  if (!files || files.length === 0) return;
+
+  if (type === 'image' || type === 'document' || type === 'video') {
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (type === 'image') {
+        this.lessonData.image = reader.result as string;
+      } 
+      else if (type === 'document') {
+        this.lessonData.document = reader.result as string;
+        this.lessonData.videoUrl = null;
+        this.lessonData.documentFileName = file.name;
+      } 
+      else if (type === 'video') {
+        this.lessonData.videoUrl = reader.result as string;
+        this.lessonData.document = null;
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ✅ Multiple attachments
+  else if (type === 'attachments') {
+    // Initialize if undefined
+    if (!this.lessonData.attachments) this.lessonData.attachments = [];
+
+    Array.from(files).forEach(file => {
       const reader = new FileReader();
       reader.onload = () => {
-        if (type === 'image') this.lessonData.image = reader.result as string;
-        else if (type === 'document') {
-          this.lessonData.document = reader.result as string;
-          this.lessonData.videoUrl = null;
-          this.lessonData.documentFileName = file.name; 
-        } else if (type === 'video') {
-          this.lessonData.videoUrl = reader.result as string;
-          this.lessonData.document = null;
-        } else if (type === 'attachments') this.lessonData.attachments = Array.from(event.target.files);
+        this.lessonData.attachments!.push({
+          name: file.name,
+          data: reader.result as string
+        });
       };
       reader.readAsDataURL(file);
-    }
+    });
   }
+}
+
+
+  
 }

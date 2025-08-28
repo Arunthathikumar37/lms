@@ -1,18 +1,20 @@
 <div class="vp-page" *ngIf="lesson as L">
 
-  <!-- Video + Tabs -->
-  <div class="vp-main">
+  <!-- Main Video Player -->
+ <div class="vp-main">
+
+  <!-- Main Video Player -->
+  <div class="vp-video">
+    <video #player class="vp-player" controls preload="metadata" *ngIf="safeVideoUrl; else noVid">
+      <source [src]="safeVideoUrl" type="video/mp4"/>
+      Your browser does not support HTML5 video.
+    </video>
+
+    <ng-template #noVid>
+      <div class="vp-novid">No video available for this lesson.</div>
+    </ng-template>
+  </div>
   
-    <!-- Video -->
-    <div class="vp-video">
-      <video #player class="vp-player" controls preload="metadata" *ngIf="safeVideoUrl; else noVid">
-        <source [src]="safeVideoUrl" type="video/mp4"/>
-        Your browser does not support HTML5 video.
-      </video>
-      <ng-template #noVid>
-        <div class="vp-novid">No video available for this lesson.</div>
-      </ng-template>
-    </div>
 
     <!-- Tabs (Details | Notes | Summary | Transcript) -->
      
@@ -51,27 +53,26 @@
             <input nbInput fullWidth placeholder="Search in notes..." [(ngModel)]="notesSearch" />
           </div>
 
-          <ul class="note-list" *ngIf="filteredNotes.length; else noNotes">
-            <li class="note-item" *ngFor="let n of filteredNotes; let i = index">
-              <span class="note-time" *ngIf="n.time" (click)="jumpToTimeStr(n.time)">
-                {{ n.time }}
-              </span>
-              <span class="note-text">{{ n.text }}</span>
+         <ul class="note-list" *ngIf="filteredNotes.length; else noNotes">
+  <li class="note-item" *ngFor="let n of filteredNotes; let i = index">
+    <span class="note-time" *ngIf="n.time" (click)="jumpToTimeStr(n.time)">
+      {{ n.time }}
+    </span>
+    <span class="note-text">{{ n.text }}</span>
 
-              <!-- Pin + Menu side by side -->
-              <div class="note-actions">
-                <button  class="pin" ghost (click)="jumpToTimeStr(n.time)" title="Go to this point">📌</button>
-                <div class="note-menu" nbContextMenu [nbContextMenu]="menu" [nbContextMenuContext]="i">⋮</div>
-              </div>
+    <div class="note-actions">
+      <button class="pin" ghost (click)="jumpToTimeStr(n.time)">📌</button>
 
-              <!-- Menu template -->
-              <nb-menu #menu [items]="[
-                { title: 'Edit', data: i },
-                { title: 'Delete', data: i }
-              ]" (itemClick)="onMenuItemClick($event)">
-              </nb-menu>
-            </li>
-          </ul>
+      <!-- Context menu -->
+      <nb-context-menu
+    [items]="menu"
+    (itemClick)="onMenuClick($event, i)">
+    ⋮
+  </nb-context-menu>
+    </div>
+  </li>
+</ul>
+
 
           <ng-template #noNotes>
             <div class="muted">No notes yet.</div>
@@ -91,6 +92,7 @@
           <p class="vp-paragraph">{{ L.summary || 'No summary available.' }}</p>
         </div>
       </nb-tab>
+      
 
       <!-- TRANSCRIPT -->
       <nb-tab>
@@ -101,6 +103,9 @@
     <span>Transcript</span>
   </ng-template>
         <div class="vp-tab-body">
+              <div class="input">
+      <input nbInput fullWidth placeholder="Search transcript..." [(ngModel)]="transcriptSearch" />
+    </div>
           <ul class="ts-list" *ngIf="L.transcript?.length; else noTs">
             <li class="ts-item" *ngFor="let line of L.transcript">
               <span class="ts-time" (click)="jumpToTimeStr(line.time)">[{{ line.time }}]</span>
@@ -119,13 +124,70 @@
   </div>
 
   <!-- Nebular Toggle Button -->
-  <button nbButton status="primary" shape="rectangle" size="tiny" class="right-toggle" (click)="togglePanel()">
-    {{ panelOpen ? '<' : '>' }}
-  </button>
+<button nbButton 
+        status="basic" 
+        size="small" 
+        class="right-toggle" 
+        (click)="togglePanel()">
+  <nb-icon [icon]="panelOpen ? 'arrow-ios-back-outline' : 'arrow-ios-forward-outline'"></nb-icon>
+</button>
 
-  <!-- Optional slide panel -->
-  <div class="right-panel" *ngIf="panelOpen">
-    <p>Extra content here...</p>
+
+
+
+
+<div class="vp-page" *ngIf="lesson as L">
+
+  <!-- Video + Tabs -->
+  <div class="vp-main">
+  
+    <!-- Video -->
+    <div class="vp-video">
+      <video #player class="vp-player" controls preload="metadata" *ngIf="safeVideoUrl; else noVid">
+        <source [src]="safeVideoUrl" type="video/mp4"/>
+        Your browser does not support HTML5 video.
+      </video>
+      <ng-template #noVid>
+        <div class="vp-novid">No video available for this lesson.</div>
+      </ng-template>
+    </div>
+
+    <!-- Right Slide Panel Toggle -->
+    <button nbButton 
+            status="basic" 
+            size="small" 
+            class="right-toggle" 
+            (click)="togglePanel()">
+      <nb-icon [icon]="panelOpen ? 'arrow-ios-back-outline' : 'arrow-ios-forward-outline'"></nb-icon>
+    </button>
+
+    <!-- Right Slide Panel -->
+<!-- Right Slide Panel -->
+<div class="right-panel" *ngIf="panelOpen">
+    <h4>Attachments</h4>
+    <div class="attachment-card" 
+         *ngFor="let att of lesson?.attachments; let i = index"
+         (click)="playAttachment(i)">
+      <span class="attachment-link">{{ att.name }}</span>
+
+      <!-- Progress bar -->
+     <div class="progress-bar">
+  <!-- Highlight: check if this card is currently playing -->
+  <div class="progress" [style.width.%]="currentAttachmentIndex === i ? attachmentProgress[i] : 0"></div>
+</div>
+
+    </div>
   </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+

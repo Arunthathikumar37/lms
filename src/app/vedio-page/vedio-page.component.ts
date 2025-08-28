@@ -29,6 +29,20 @@ export class VedioPageComponent implements OnInit, AfterViewInit {
 
   @ViewChild('player') playerRef!: ElementRef<HTMLVideoElement>;
   notes: any;
+  attachmentProgress: number[] = [];  // initialize as empty array
+  currentAttachmentIndex: number | null = null;
+  transcriptSearch: any;
+  get filteredTranscript(): TranscriptLine[] {
+    if (!this.lesson?.transcript) return [];
+    const term = this.transcriptSearch.trim().toLowerCase();
+    if (!term) return this.lesson.transcript;
+
+    return this.lesson.transcript.filter(line =>
+      (line.text || '').toLowerCase().includes(term) ||
+      (line.time || '').toLowerCase().includes(term)
+    );
+  }
+
 
   constructor(
     private route: ActivatedRoute,
@@ -51,6 +65,16 @@ export class VedioPageComponent implements OnInit, AfterViewInit {
     // Initialize arrays
     if (!this.lesson.transcript) this.lesson.transcript = [];
     if (!this.lesson.notes) this.lesson.notes = [];
+    if (!this.lesson.attachments) this.lesson.attachments = [];
+    if (this.lesson.videoUrl) {
+    this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.lesson.videoUrl);
+  }
+  this.attachmentProgress = this.lesson.attachments.map(() => 0);
+
+    if (this.lesson.videoUrl) {
+      this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.lesson.videoUrl);
+      this.currentAttachmentIndex = null; // main lesson video
+    }
 
     // ---- Add Transcript Lines Here ----
     this.lesson.transcript.push(
@@ -65,20 +89,27 @@ export class VedioPageComponent implements OnInit, AfterViewInit {
       this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.lesson.videoUrl);
     }
   }
-
-  ngAfterViewInit(): void {
-    // no-op; playerRef becomes available here
+ngAfterViewInit(): void {
+  if (this.playerRef?.nativeElement) {
+    this.playerRef.nativeElement.addEventListener('timeupdate', () => {
+      if (this.currentAttachmentIndex !== null) {
+        const player = this.playerRef.nativeElement;
+        if (player.duration) {
+          const percent = (player.currentTime / player.duration) * 100;
+          this.attachmentProgress[this.currentAttachmentIndex] = percent;
+        }
+      }
+    });
   }
-
+}
   // ---- Notes ----
-  addNote(): void {
+addNote(): void {
     if (!this.lesson || !this.noteText.trim() || !this.playerRef?.nativeElement) return;
     const t = Math.floor(this.playerRef.nativeElement.currentTime);
     const time = this.formatTime(t);
     this.lesson.notes!.push({ text: this.noteText.trim(), time });
     this.noteText = '';
   }
-
   get filteredNotes(): NoteItem[] {
     if (!this.lesson?.notes) return [];
     const term = this.notesSearch.trim().toLowerCase();
@@ -120,14 +151,7 @@ export class VedioPageComponent implements OnInit, AfterViewInit {
   togglePanel() {
     this.panelOpen = !this.panelOpen;
   }
-onMenuClick(item: any, note: any, index: number) {
-    if (item.data.action === 'edit') {
-      console.log('Edit note:', note);
-      // put your edit logic here
-    } else if (item.data.action === 'delete') {
-      this.notes.splice(index, 1);
-    }
-  }
+
 
   togglePin(note: any, index: number) {
     note.pinned = !note.pinned;
@@ -136,4 +160,62 @@ onMenuClick(item: any, note: any, index: number) {
       this.notes.unshift(note);
     }
   }
+  menu = [
+  { title: 'Edit', action: 'edit' },
+  { title: 'Delete', action: 'delete' },
+];
+
+onMenuClick(item: any, index: number) {
+  if (!this.lesson?.notes) return;
+
+  if (item.action === 'edit') {
+    const note = this.lesson.notes[index];
+    console.log('Edit note:', note);
+
+    // Example: load text back into input box
+    this.noteText = note.text;
+    this.lesson.notes.splice(index, 1);
+  } 
+  else if (item.action === 'delete') {
+    this.lesson.notes.splice(index, 1);
+  }
+}
+// Inside VedioPageComponent class
+playAttachment(index: number) {
+  if (!this.lesson?.attachments || !this.lesson.attachments[index]) return;
+
+  const file = this.lesson.attachments[index];
+
+  // ✅ Highlight: set current attachment index first
+  this.currentAttachmentIndex = index;
+
+  // ✅ Update the main video player with the selected attachment
+  this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file.data);
+
+  // ✅ Reset progress of other attachments
+  this.attachmentProgress = this.lesson.attachments.map((_, i) => (i === index ? 0 : this.attachmentProgress[i] || 0));
+
+  // ✅ Load and play the new video
+  setTimeout(() => {
+    if (this.playerRef?.nativeElement) {
+      const player = this.playerRef.nativeElement;
+      player.load(); // reload video source
+      player.play().catch(err => console.log('Error playing video:', err));
+
+      // ✅ Update progress bar as video plays
+      player.ontimeupdate = () => {
+        if (player.duration) {
+          const percent = (player.currentTime / player.duration) * 100;
+          this.attachmentProgress[this.currentAttachmentIndex!] = percent;
+        }
+      };
+    }
+  }, 50);
+}
+
+
+
+
+
+
 }
