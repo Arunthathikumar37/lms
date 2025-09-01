@@ -1,0 +1,207 @@
+<nb-layout>
+  <nb-layout-column>
+    
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div class="header-actions">
+      <button nbButton status="primary" (click)="addLesson()">+ Add lesson</button></div>
+
+      <div class="search-container">
+        <label class="search-label">Filter Lessons By :</label>
+        <div class="search-input-wrapper">
+          <input 
+  nbInput
+         fullWidth
+         fieldSize="small"
+            
+            placeholder="Search"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="updateFilter()" />
+
+          <nb-icon icon="search-outline" pack="eva" class="search-icon"></nb-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit Lesson Popup -->
+    <div class="popup-overlay" *ngIf="showForm">
+      <div class="popup-form">
+        <h2>{{ editingLesson ? 'Edit Lesson' : 'Add Lesson' }}</h2>
+        <form #lessonForm="ngForm" (ngSubmit)="saveLesson()">
+
+          
+
+<!-- Lesson Type Select -->
+<label>Lesson Type*</label>
+<nb-select placeholder="-- Select Type --" fullWidth fieldSize="small"
+           [(selected)]="lessonData.type"
+           name="type"
+           required>
+  <nb-option value="Video">Video</nb-option>
+  <nb-option value="Document">Document</nb-option>
+</nb-select>
+
+
+<div class="error" *ngIf="!lessonData.type">
+  Lesson type is required.
+</div>
+
+
+
+<!-- File Uploads -->
+<!-- Video Upload -->
+<label *ngIf="lessonData.type === 'Video'">Upload Video*</label>
+<label class="custom-file-upload" *ngIf="lessonData.type === 'Video'">
+  <input type="file"
+         nbInput
+         fullWidth
+         fieldSize="small"
+         accept="video/*"
+         (change)="onFileSelected($event, 'video')"
+         required />
+  <span>
+    <nb-icon icon="video-outline"></nb-icon>
+    {{ lessonData.videoFileName || 'Choose Video' }}
+  </span>
+</label>
+
+<!-- Document Upload -->
+<label *ngIf="lessonData.type === 'Document'">Upload Document*</label>
+<label class="custom-file-upload" *ngIf="lessonData.type === 'Document'">
+  <input type="file"
+         nbInput
+         fullWidth
+         fieldSize="small"
+         accept="application/pdf,.doc,.docx"
+         (change)="onFileSelected($event, 'document')"
+         required />
+  <span>
+    <nb-icon icon="file-text-outline"></nb-icon>
+     {{ lessonData.documentFileName || 'Choose Document' }}
+  </span>
+</label>
+
+<!-- Lesson Image -->
+<label>Lesson Image</label>
+<label class="custom-file-upload">
+  <input type="file"
+         nbInput
+         fullWidth
+         fieldSize="small"
+         accept="image/*"
+         (change)="onFileSelected($event, 'image')" />
+  <span>
+    <nb-icon icon="image-outline"></nb-icon>
+    {{ lessonData.imageFileName || 'Choose Image' }}
+  </span>
+</label>
+
+
+<!-- Title -->
+<label>Title*</label>
+<input type="text" nbInput fullWidth fieldSize="small"
+       placeholder="Enter Title"
+       [(ngModel)]="lessonData.title"
+       name="title"
+       required
+       minlength="3"
+       maxlength="50"
+       #titleCtrl="ngModel" />
+
+<!-- Description -->
+<label>Description*</label>
+<textarea nbInput
+          fullWidth
+          rows="3"
+          [(ngModel)]="lessonData.description"
+          name="description"
+          required
+          minlength="10"
+          #descCtrl="ngModel"></textarea>
+
+<!-- Attachments -->
+<label >Attachments (Optional) </label>
+<label class="custom-file-upload" >
+  <input accept="video/*" type="file" multiple (change)="onFileSelected($event, 'attachments')"  nbInput fullWidth fieldSize="small"/>
+  <span>
+    <nb-icon icon="paper-plane-outline"></nb-icon>
+    Choose Files (Max 5, 20MB each)
+  </span>
+</label>
+
+
+
+          <!-- Summary -->
+          <label>Summary</label>
+          <input nbInput fullWidth [(ngModel)]="lessonData.summary" name="summary" />
+
+          <!-- Duration -->
+          <label>Duration (minutes)*</label>
+          <input nbInput type="number" fullWidth
+                 [(ngModel)]="lessonData.duration"
+                 name="duration" required min="1" max="300" #durationCtrl="ngModel" />
+
+          <!-- Order Index -->
+          <label>Order Index*</label>
+          <input nbInput type="number" fullWidth
+                 [(ngModel)]="lessonData.orderIndex"
+                 name="orderIndex" required min="1" #orderCtrl="ngModel" />
+
+          <!-- Action Buttons -->
+          <div class="actions">
+  <button nbButton status="basic" type="button" (click)="cancel()">Cancel</button>
+  <button nbButton status="success" type="submit" [disabled]="!lessonForm.valid">Save</button>
+</div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Lessons List -->
+    <div class="lessons-container">
+      <nb-card *ngFor="let lesson of filteredLessons" class="lesson-card">
+        <div class="badge" [ngClass]="lesson.type.toLowerCase()">{{ lesson.type }}</div>
+        <nb-card-header>
+          <img *ngIf="lesson.image" [src]="lesson.image" class="lesson-image" />
+        </nb-card-header>
+        <nb-card-body>
+          <h5>{{ lesson.title }}</h5>
+          <p>{{ lesson.description }}</p>
+          <div class="lesson-meta">
+            <nb-icon *ngIf="lesson.type === 'Video'" icon="video-outline" class="tiny-icon"></nb-icon>
+            <nb-icon *ngIf="lesson.type === 'Document'" icon="book-outline" class="tiny-icon"></nb-icon>
+            <span>Lesson {{ lesson.orderIndex }} • {{ lesson.duration }} min</span>
+          </div>
+        </nb-card-body>
+        <nb-card-footer class="footer-actions">
+          <!-- Actions -->
+          <button nbButton class="icon-only" *ngIf="lesson.type === 'Video'" (click)="playLessonVideo(lesson)">
+            <nb-icon icon="play-circle-outline" class="tiny-icon3"></nb-icon>
+          </button>
+          <button nbButton class="icon-only" *ngIf="lesson.type === 'Document'" (click)="openLessonDocument(lesson)">
+            <nb-icon icon="file-text-outline" class="tiny-icon4"></nb-icon>
+          </button>
+          <button nbButton class="icon-only" (click)="editLesson(lesson)">
+            <nb-icon icon="edit-2-outline" class="tiny-icon1"></nb-icon>
+          </button>
+          <button nbButton class="icon-only" (click)="confirmDelete(lesson)">
+            <nb-icon icon="trash-2-outline" class="tiny-icon2"></nb-icon>
+          </button>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <!-- Delete Confirmation -->
+    <div class="popup-overlay" *ngIf="showDeleteConfirm">
+      <div class="popup-form delete">
+        <h2>Confirm Delete</h2>
+        <p>Are you sure you want to delete "<b>{{ lessonToDelete?.title }}</b>"?</p>
+        <div class="actions">
+          <button nbButton status="basic" (click)="cancelDelete()">Cancel</button>
+          <button nbButton status="danger" (click)="deleteLesson()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+  </nb-layout-column>
+</nb-layout>

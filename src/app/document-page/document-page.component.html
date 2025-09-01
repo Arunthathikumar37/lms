@@ -1,0 +1,13 @@
+<div class="document-viewer">
+  <div class="top-bar">
+    <h2>{{ lesson?.title }}</h2>
+    <button class="back-btn" routerLink="/lessons">⬅ Back to Lessons</button>
+  </div>
+
+  <iframe *ngIf="safeDocumentUrl"
+          [src]="safeDocumentUrl"
+          width="100%"
+          height="600px"
+          style="border: none;">
+  </iframe>
+</div>
