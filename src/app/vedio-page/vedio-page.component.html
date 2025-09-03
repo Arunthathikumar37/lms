@@ -1,148 +1,8 @@
+<!-- ======================= Video + Tabs ======================= -->
 <div class="vp-page" *ngIf="lesson as L">
 
-  <!-- Main Video Player -->
- <div class="vp-main">
-
-  <!-- Main Video Player -->
-  <div class="vp-video">
-    <video #player class="vp-player" controls preload="metadata" *ngIf="safeVideoUrl; else noVid">
-      <source [src]="safeVideoUrl" type="video/mp4"/>
-      Your browser does not support HTML5 video.
-    </video>
-
-    <ng-template #noVid>
-      <div class="vp-novid">No video available for this lesson.</div>
-    </ng-template>
-  </div>
-  
-
-    <!-- Tabs (Details | Notes | Summary | Transcript) -->
-     
-    <nb-tabset [selectedIndex]="selectedIndex" class="compact-tabs" (changeTab)="onTabChanged($event)">
-
-      
-      <!-- DETAILS -->
-<nb-tab>
-  
-  <ng-template nbTabTitle>
-    <nb-icon icon="info-outline" class="tab-icon"></nb-icon>
-    <span>Details</span>
-  </ng-template>
-<div class="detail-card">
-  <div class="vp-tab-body">
-    <p class="vp-paragraph">{{ L.details || 'No details available.' }}</p>
-    </div>
-  </div>
-</nb-tab>
-
-
-      <!-- NOTES -->
-           <!-- NOTES -->
-      <nb-tab>
-  <ng-template nbTabTitle>
-    <nb-icon icon="edit-2-outline" class="tab-icon">
-    </nb-icon>
-    <span>Notes</span>
-  </ng-template>
-        <div class="vp-tab-body">
-          <div class="note-row">
-            <input nbInput fullWidth  placeholder="Pause the video to add a note..."   [(ngModel)]="noteText" />
-            <button nbButton status="basic" size="small" class="note-add" (click)="addNote()">+</button>
-          </div>
-
-          <div class="input">
-            <input nbInput fullWidth placeholder="Search in notes..." [(ngModel)]="notesSearch" />
-          </div>
-
-         <ul class="note-list" *ngIf="filteredNotes.length; else noNotes">
-  <li class="note-item" *ngFor="let n of filteredNotes; let i = index">
-    <span class="note-time" *ngIf="n.time" (click)="jumpToTimeStr(n.time)">
-      {{ n.time }}
-    </span>
-    <span class="note-text">{{ n.text }}</span>
-
-    <div class="note-actions">
-      <button nbButton ghost (click)="jumpToTimeStr(n.time)" title="Pin to notes" class="pin-btn">
-  <nb-icon icon="pin-round-fill" pack="custom" class="pin-icon"></nb-icon>
-</button>
-
-
-      <!-- Context menu -->
-
-    </div>
-  </li>
-</ul>
-
-
-          <ng-template #noNotes>
-            <div class="muted">No notes yet.</div>
-          </ng-template>
-        </div>
-      </nb-tab>
-
-      <!-- SUMMARY -->
-      <nb-tab>
-  <ng-template nbTabTitle>
-    <nb-icon icon="menu-outline" class="tab-icon" >
-             
-    </nb-icon>
-    <span>Summary</span>
-  </ng-template>
-        <div class="vp-tab-body">
-          <p class="vp-paragraph">{{ L.summary || 'No summary available.' }}</p>
-        </div>
-      </nb-tab>
-      
-
-      <!-- TRANSCRIPT -->
-      <nb-tab>
-  <ng-template nbTabTitle>
-    <nb-icon icon="book-outline" class="tab-icon" >
-             
-    </nb-icon>
-    <span>Transcript</span>
-  </ng-template>
-        <div class="vp-tab-body">
-              <div class="input">
-      <input nbInput fullWidth placeholder="Search transcript..." [(ngModel)]="transcriptSearch" />
-    </div>
-          <ul class="ts-list" *ngIf="L.transcript?.length; else noTs">
-            <li class="ts-item" *ngFor="let line of L.transcript">
-              <span class="ts-time" (click)="jumpToTimeStr(line.time)">[{{ line.time }}]</span>
-              <span class="ts-text">{{ line.text }}</span>
-<button class="pin" nbButton ghost (click)="pinFromTranscript(line)" title="Pin to notes">
-  <nb-icon icon="pin-round-fill" pack="custom" class="pin-icon"></nb-icon>
-</button>
-
-
-            </li>
-          </ul>
-          <ng-template #noTs>
-            <div class="muted">No transcript available.</div>
-          </ng-template>
-        </div>
-      </nb-tab>
-    </nb-tabset>
-  </div>
-
-  <!-- Nebular Toggle Button -->
-<button nbButton 
-        status="basic" 
-        size="small" 
-        class="right-toggle" 
-        (click)="togglePanel()">
-  <nb-icon [icon]="panelOpen ? 'arrow-ios-back-outline' : 'arrow-ios-forward-outline'"></nb-icon>
-</button>
-
-
-
-
-
-<div class="vp-page" *ngIf="lesson as L">
-
-  <!-- Video + Tabs -->
   <div class="vp-main">
-  
+
     <!-- Video -->
     <div class="vp-video">
       <video #player class="vp-player" controls preload="metadata" *ngIf="safeVideoUrl; else noVid">
@@ -154,41 +14,143 @@
       </ng-template>
     </div>
 
-    <!-- Right Slide Panel Toggle -->
-    <button nbButton 
-            status="basic" 
-            size="small" 
-            class="right-toggle" 
-            (click)="togglePanel()">
-      <nb-icon [icon]="panelOpen ? 'arrow-ios-back-outline' : 'arrow-ios-forward-outline'"></nb-icon>
-    </button>
+    <!-- Tabs -->
+    <nb-tabset #tabset class="compact-tabs full-width" (changeTab)="onTabChanged($event)">
 
-    <!-- Right Slide Panel -->
-<!-- Right Slide Panel -->
-<div class="right-panel" *ngIf="panelOpen">
-    <h4>Attachments</h4>
+      <!-- DETAILS -->
+      <nb-tab>
+        <ng-template nbTabTitle>
+          <nb-icon icon="info-outline" class="tab-icon"></nb-icon>
+          <span>Details</span>
+        </ng-template>
+        <div class="detail-card">
+          <div class="vp-tab-body">
+            <p class="vp-paragraph">{{ L.details || 'No details available.' }}</p>
+          </div>
+        </div>
+      </nb-tab>
+
+      <!-- NOTES -->
+      <nb-tab>
+        <ng-template nbTabTitle>
+          <nb-icon icon="edit-2-outline" class="tab-icon"></nb-icon>
+          <span>Notes</span>
+        </ng-template>
+        <div class="vp-tab-body">
+          <div class="note-row">
+            <input   nbInput
+         fullWidth
+         fieldSize="small" [(ngModel)]="noteText"
+                   placeholder="Pause the video to add a note..." />
+            <button nbButton status="basic" size="small" class="note-add" (click)="addNote()">
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+
+          <div class="input">
+            <input   nbInput
+         fullWidth
+         fieldSize="small" placeholder="Search in notes..." [(ngModel)]="notesSearch" />
+          </div>
+
+          <ul class="note-list" *ngIf="filteredNotes.length; else noNotes">
+            <li class="note-item" *ngFor="let n of filteredNotes; let i = index">
+              <span class="note-time" *ngIf="n.time" (click)="jumpToTimeStr(n.time)">
+                {{ n.time }}
+              </span>
+              <span class="note-text">{{ n.text }}</span>
+              <div class="note-actions">
+                <!-- Pin icon -->
+                <button nbButton ghost (click)="jumpToTimeStr(n.time)" nbTooltip="GO TO THAT POINT"
+                        nbTooltipStatus="dark" nbTooltipPlacement="top" class="pin-btn">
+                  <nb-icon icon="pin-round-fill" pack="custom" class="pin-icon"></nb-icon>      
+                </button>
+              </div>
+            </li>
+          </ul>
+
+          <ng-template #noNotes>
+            <div class="muted">No notes yet.</div>
+          </ng-template>
+        </div>
+      </nb-tab>
+
+      <!-- SUMMARY -->
+      <nb-tab>
+        <ng-template nbTabTitle>
+          <nb-icon icon="menu-outline" class="tab-icon"></nb-icon>
+          <span>Summary</span>
+        </ng-template>
+        <div class="vp-tab-body">
+          <p class="vp-paragraph">{{ L.summary || 'No summary available.' }}</p>
+        </div>
+      </nb-tab>
+
+      <!-- TRANSCRIPT -->
+      <nb-tab>
+        <ng-template nbTabTitle>
+          <nb-icon icon="book-outline" class="tab-icon"></nb-icon>
+          <span>Transcript</span>
+        </ng-template>
+        <div class="vp-tab-body">
+          <div class="input">
+            <input nbInput fullWidth placeholder="Search transcript..." [(ngModel)]="transcriptSearch" />
+          </div>
+
+          <ul class="ts-list" *ngIf="L.transcript?.length; else noTs">
+            <li class="ts-item" *ngFor="let line of L.transcript">
+              <span class="ts-time" (click)="jumpToTimeStr(line.time)">[{{ line.time }}]</span>
+              <span class="ts-text">{{ line.text }}</span>
+              <button class="pin" nbButton ghost 
+                      (click)="pinFromTranscript(line)" 
+                      nbTooltip="PIN TO NOTES" 
+                      nbTooltipStatus="dark" 
+                      nbTooltipPlacement="top">
+                <nb-icon icon="pin-round-fill" pack="custom" class="pin-icon"></nb-icon>
+              </button>
+            </li>
+          </ul>
+
+          <ng-template #noTs>
+            <div class="muted">No transcript available.</div>
+          </ng-template>
+        </div>
+      </nb-tab>
+
+    </nb-tabset>
+  </div>
+</div>
+
+
+<!-- Right Panel Toggle Button -->
+<button class="right-toggle" (click)="togglePanel()">
+  <nb-icon [icon]="panelOpen ? 'arrow-ios-back-outline' : 'arrow-ios-forward-outline'"></nb-icon>
+</button>
+
+<!-- Right Sliding Panel -->
+<div class="right-panel" [class.open]="panelOpen">
+  <div class="panel-header">
+    <span>Attachment</span>
+    <button nbButton ghost size="small" (click)="togglePanel()"></button>
+  </div>
+
+  <div class="panel-content">
+    <p>Attachment lessons</p>
+
     <div class="attachment-card" 
          *ngFor="let att of lesson?.attachments; let i = index"
          (click)="playAttachment(i)">
       <span class="attachment-link">{{ att.name }}</span>
 
       <!-- Progress bar -->
-     <div class="progress-bar">
-  <!-- Highlight: check if this card is currently playing -->
-  <div class="progress" [style.width.%]="currentAttachmentIndex === i ? attachmentProgress[i] : 0"></div>
-</div>
-
+      <div class="progress-bar">
+        <div class="progress" 
+             [style.width.%]="currentAttachmentIndex === i ? attachmentProgress[i] : 0">
+        </div>
+      </div>
     </div>
-  </div>
-
-</div>
-
-
-
-
-
-
-
+  </div> 
+</div> 
 
 
 

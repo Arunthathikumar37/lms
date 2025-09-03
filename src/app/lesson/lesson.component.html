@@ -59,7 +59,7 @@
          accept="video/*"
          (change)="onFileSelected($event, 'video')"
          required />
-  <span>
+  <span  class="doc-text">
     <nb-icon icon="video-outline"></nb-icon>
     {{ lessonData.videoFileName || 'Choose Video' }}
   </span>
@@ -75,7 +75,7 @@
          accept="application/pdf,.doc,.docx"
          (change)="onFileSelected($event, 'document')"
          required />
-  <span>
+  <span  class="doc-text">
     <nb-icon icon="file-text-outline"></nb-icon>
      {{ lessonData.documentFileName || 'Choose Document' }}
   </span>
@@ -90,7 +90,7 @@
          fieldSize="small"
          accept="image/*"
          (change)="onFileSelected($event, 'image')" />
-  <span>
+  <span  class="doc-text">
     <nb-icon icon="image-outline"></nb-icon>
     {{ lessonData.imageFileName || 'Choose Image' }}
   </span>
@@ -175,19 +175,31 @@
         </nb-card-body>
         <nb-card-footer class="footer-actions">
           <!-- Actions -->
-          <button nbButton class="icon-only" *ngIf="lesson.type === 'Video'" (click)="playLessonVideo(lesson)">
-            <nb-icon icon="play-circle-outline" class="tiny-icon3"></nb-icon>
-          </button>
-          <button nbButton class="icon-only" *ngIf="lesson.type === 'Document'" (click)="openLessonDocument(lesson)">
-            <nb-icon icon="file-text-outline" class="tiny-icon4"></nb-icon>
-          </button>
-          <button nbButton class="icon-only" (click)="editLesson(lesson)">
-            <nb-icon icon="edit-2-outline" class="tiny-icon1"></nb-icon>
-          </button>
-          <button nbButton class="icon-only" (click)="confirmDelete(lesson)">
-            <nb-icon icon="trash-2-outline" class="tiny-icon2"></nb-icon>
-          </button>
+          <button nbButton class="icon-only" *ngIf="lesson.type === 'Video'" 
+        (click)="playLessonVideo(lesson)"
+        nbTooltip="Play Video" nbTooltipStatus="dark" nbTooltipPlacement="top">
+  <nb-icon icon="play-circle-outline" class="tiny-icon3"></nb-icon>
+</button>
+
+<button nbButton class="icon-only" *ngIf="lesson.type === 'Document'" 
+        (click)="openLessonDocument(lesson)"
+        nbTooltip="Open Document" nbTooltipStatus="dark" nbTooltipPlacement="top">
+  <nb-icon icon="file-text-outline" class="tiny-icon4"></nb-icon>
+</button>
+
+<button nbButton class="icon-only" 
+        (click)="editLesson(lesson)"
+        nbTooltip="Edit Lesson" nbTooltipStatus="dark" nbTooltipPlacement="top">
+  <nb-icon icon="edit-2-outline" class="tiny-icon1"></nb-icon>
+</button>
+
+<button nbButton class="icon-only" 
+        (click)="confirmDelete(lesson)"
+        nbTooltip="Delete Lesson" nbTooltipStatus="dark" nbTooltipPlacement="top">
+  <nb-icon icon="trash-2-outline" class="tiny-icon2"></nb-icon>
+</button>
         </nb-card-footer>
+
       </nb-card>
     </div>
 

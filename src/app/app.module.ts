@@ -28,6 +28,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 import { RouterModule, Routes } from '@angular/router';
 
+
 const routes: Routes = [
   { path: '', component: LessonComponent },         
   { path: 'video/:id', component: VedioPageComponent },     
@@ -40,7 +41,7 @@ const routes: Routes = [
     AppComponent,
     LessonComponent,
     VedioPageComponent,     
-    DocumentPageComponent   
+    DocumentPageComponent, 
   ],
   imports: [
     BrowserModule,

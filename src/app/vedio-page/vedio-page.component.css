@@ -1,10 +1,11 @@
-/* Layout */
+/* ===========================
+   Layout
+=========================== */
 .vp-page {
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 16px;
   padding: 16px;
-  
   min-height: 100vh;
   box-sizing: border-box;
 }
@@ -15,22 +16,9 @@
   min-width: 0;
 }
 
-/* Title */
-.vp-title {
-  margin-bottom: 8px;
-}
-.vp-title h2 {
-  margin: 0;
-  font-weight: 600;
-  color: #1f2937;
-}
-.ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Video */
+/* ===========================
+   Video Player
+=========================== */
 .vp-video {
   display: flex;
   justify-content: center;
@@ -39,14 +27,12 @@
 }
 
 .vp-player {
-  width: 100%;     /* reduce width (default was likely 100%) */
-  height: auto;   /* keep aspect ratio */
-  max-height: 350px; /* limit height */
+  width: 100%;
+  height: auto;
+  max-height: 350px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   margin-left: 30px;
-  
-  
 }
 
 .vp-novid {
@@ -55,25 +41,15 @@
   background: #fff;
 }
 
-/* Tabs */
-nb-tabset {
-  --tab-underline-color: #3b82f6;
-}
-/* .vp-tab-body {
-  padding: 12px;
-  background: #b05252;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
-} */
-
-/* Paragraph spacing */
 .vp-paragraph {
   margin: 0;
   line-height: 1.7;
   color: #111827;
 }
 
-/* Notes */
+/* ===========================
+   Notes
+=========================== */
 .note-row {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -81,329 +57,201 @@ nb-tabset {
   align-items: center;
   margin-bottom: 10px;
 }
+
+
 .note-add {
   min-width: 30px;
-  margin-top:2px;
+  margin-top: 2px;
   margin-left: 20px;
   border: none;
   background-color: gray;
   padding-top: 5px;
- 
 }
 
 .note-search {
   margin-bottom: 10px;
   margin-left: 20px;
-  border: white;
 }
-/* .note-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.note-item {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 10px;
-  align-items: center;
-  padding: 5px 10px;
-  border: 1px solid #e5e7eb;
-  border-radius: 0px;
-  background: #eee9e9;
-  margin-bottom: 8px;
-  margin-top: 20px;
-  transition: all 0.2s ease-in-out;
-  margin-left: 30px;
-} */
 
-.note-item:hover {
-  border: 1px solid white;
-  background: white;
-   border-left: 4px solid #3b82f6;
-  cursor: pointer;
-  
+.note-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 5px;
+  border-left: 3px solid transparent;   /* keep space for hover border */
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
+
+/* Hover effect */
+.note-item:hover {
+  background: #f0f7ff;      /* light blue background */
+  border-left-color: #00aaff; /* blue left border */
+  cursor: pointer;
+}
+
+
 
 .note-time {
-  color: #111827;          /* blue timestamp */
+  color: black;
   font-weight: 700;
   cursor: pointer;
   user-select: none;
-  padding-left:5px;
+  padding-left: 5px;
 }
+
+
 .note-text {
   color: #111827;
 }
 
-/* Transcript */
+.note-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Pin icon */
+.pin-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-width: 0;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ensure no hover box from browser */
+.pin-btn:hover,
+.pin-btn:focus,
+.pin-btn:active {
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* icon styles */
+.pin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1px;
+  color: #00aaff;
+  transition: transform .15s ease, color .15s ease;
+}
+
+/* only icon changes on hover/click */
+.pin-btn:hover .pin-icon { transform: scale(1.1); color: #0088cc; }
+.pin-btn:active .pin-icon { transform: scale(0.95); color: #006699; }
+
+/* ===========================
+   Transcript
+=========================== */
 .ts-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
+
 .ts-item {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 10px;
   align-items: center;
-  padding: 8px 10px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 2px 2px;
+  
+  margin-top: 10px;
+}
+.ts-item:hover {
+  background: #f0f7ff;          /* light blue background */
+  border-left: 3px solid #007bff; /* blue left border */
 }
 .ts-item:last-child {
   border-bottom: none;
 }
+
 .ts-time {
-  color: #2563eb;
+  color: black;
   font-weight: 700;
   cursor: pointer;
 }
+
 .ts-text {
   color: #111827;
 }
 
-
-
-/* Fixed toggle button on right corner */
+/* Toggle Button */
 .right-toggle {
   position: fixed;
-  top: 15%;
-  right: 0;
-  transform: translateY(-50%);
-  z-index: 1000;
-  border-radius: 4px 0 0 4px;
-  padding: 0 10px;
-  min-width: 20px;
-  height: 40px;
-  font-size: 18px;
-  margin-right: 30px;
-  margin-top: 7px;
+  top: 70px;
+  right: 30px;
+  z-index: 1001;
+  
+  border: none;
+  border-radius: 4px;
+
+ 
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
   
 }
 
-/* Optional right panel */
+/* Right Panel */
 .right-panel {
   position: fixed;
-  top: 10%;
-  right: 0;
-  width: 250px;
-  height: 85%;
-  background: #f5f5f5;
-  padding: 15px;
-  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-  overflow-y: auto;
-  transition: transform 0.3s ease;
-  margin-top: 5px;
-  margin-right: 25px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .vp-page {
-    grid-template-columns: 1fr; /* stack */
-  }
-  .vp-side {
-    min-height: 220px;
-  }
-  .vp-toggle {
-    left: auto;
-    right: 12px;
-  }
-}
-/* Container for pin + menu side by side */
-.note-actions {
+  top: 50px;            /* margin from top */
+  bottom: 40px;         /* margin from bottom */
+  right: -280px;        /* hidden by default (a bit larger than width for smooth hide) */
+  width: 260px;         /* ✅ reduced width */
+  background: white;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.25);
+  transition: right 0.3s ease;
+  z-index: 1000;
   display: flex;
-  align-items: center;   /* Align vertically in the same row */
-  gap: 6px;              /* Space between pin and menu */
+  flex-direction: column;
+  border-radius: 12px 0 0 12px; /* rounded left corners */
+  overflow: hidden;     
+  margin-right: 20px;        /* keep content inside rounded corners */
 }
 
-/* Pin button */
-.note-actions button[title="Go to this point"] {
-  cursor: pointer;
-  padding: 2px 6px;
-  background-color: none;
+.right-panel.open {
+  right: 0; /* slide in */
 }
 
-/* Three-dot menu */
-.note-actions .note-menu {
-  cursor: pointer;
-  font-size: 18px;
-  color: #666;
-}
-
-.note-actions .note-menu:hover {
-  color: #000;
-}
-.pin {
-  background: transparent !important;  /* remove background */
-  border: none !important;             /* remove border */
-  box-shadow: none !important;         /* remove shadow */
-  padding: 2px 4px;                    /* tighter spacing */
-  line-height: 1;
-  cursor: pointer;
-    width: 10px;
-  height: 10px;
-  font-size: 10px; 
-  margin-right: 10px;
-}
-/* Remove Nebular's default bottom active indicator */
-::ng-deep nb-tabset .tab.active::after {
-  display: none !important;
-}
-
-/* Inactive (default) tab */
-::ng-deep nb-tabset .tab .tab-link {
-  color: gray !important;             /* gray text */
-  font-weight: normal;
-  text-decoration: none;
-  transition: color 0.2s, text-decoration 0.2s;
-}
-
-/* Hover state */
-::ng-deep nb-tabset .tab:hover .tab-link {
-  color: blue !important;             /* blue text */
-  text-decoration: underline;
-  text-decoration-color: blue;
-}
-
-/* Active tab
-::ng-deep nb-tabset .tab.active .tab-link {
-  color: blue !important;             
-  font-weight: bold;
-  text-decoration: underline;
-  text-decoration-color: blue;
-
-}
-.compact-tabs ::ng-deep .tabset-header .tab-links .tab {
-  margin-right: 15px; 
-}
-
-
-.compact-tabs ::ng-deep .tabset-header .tab-links .tab:last-child {
-  margin-right: 0;
-} */
-
-/* Optional hover & active styling */
-/* .compact-tabs ::ng-deep .tabset-header .tab-links .tab-link {
-  color: gray;
-}
-
-.compact-tabs ::ng-deep .tabset-header .tab-links .tab-link:hover {
-  color: blue !important;
-  text-decoration: underline;
-}
-
-.compact-tabs ::ng-deep .tabset-header .tab-links .tab-link.nb-selected {
-  color: blue !important;
-  font-weight: bold;
-  text-decoration: underline;
-} */
-
-
-
-.tab-icon{
-  width:16px; height:16px; font-size:16px; line-height:16px; display:inline-flex; align-items:center; justify-content:center;
-  
-    
-}
-/* .detail-card {
-  background-color: #fff;  
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  font-size: 14px;
-  color: #333;
-  line-height: 1.6;
-  margin-top: 20px;
-} */
-/* Remove Nebular default tab indicator */
-::ng-deep nb-tabset .tab.active::after {
-  display: none !important;
-}
-
-/* Style for active tab: blue underline like your image */
-::ng-deep nb-tabset .tab.active .tab-link {
-  color: blue !important;
-  font-weight: bold;
-  text-decoration: none; /* remove default underline */
-  border-bottom: 3px solid blue; /* thick solid underline */
-  padding-bottom: 4px; /* space between text/icon and underline */
-}
-
-/* Hover effect */
-::ng-deep nb-tabset .tab:hover .tab-link {
-  color: blue !important;
-}
-/* .input{
-  border: rgb(255, 255, 255);
-  background-color:rgb(255, 255, 255);
-  padding: 5px 2px 2px 2px;
-  margin-left: 30px;
-  margin-top: 20px;
-}
-.input:hover{
-  border: rgb(255, 255, 255);
-  background-color:white;
-  padding: 5px 2px 2px 2px;
-  margin-left: 30px;
-  margin-top: 20px;
-} */
-
-.right-toggle {
-  width:30px;
-  height: 30px;
-  border-radius: 0.5rem;
-  padding: 0;
-  background-color: #d1d5db;
-  border: none;
-}
-
-.right-toggle nb-icon {
-  font-size: 14px;
-}
-.note-menu {
+/* Panel Header */
+.panel-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
- 
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  padding: 12px 16px;
+  font-weight: 700;
+  border-bottom: 1px solid white;
 }
 
-.note-menu nb-icon {
-  font-size: 1px;
-  color: black; /* gray-500 */
+.panel-content {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
 }
 
 
-
-.note-menu:hover nb-icon {
-  color:black; /* darker gray on hover */
-}
-.attachment-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.attachment-list li {
+/* ===========================
+   Attachments
+=========================== */
+.attachment-card {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   margin-bottom: 10px;
-}
-
-.attachment-list a {
-  color: #007bff;
-  text-decoration: underline;
   cursor: pointer;
-  display: inline-block;
-  margin-bottom: 4px;
-}
-
-.attachment-list a:hover {
-  color: #0056b3;
+  background: #fff;
+  transition: 0.2s;
 }
 
 .progress-bar {
@@ -420,104 +268,42 @@ nb-tabset {
   width: 0%;
 }
 
-.progress-text {
-  font-size: 12px;
-  display: block;
-  text-align: right;
-  
-}
-.attachment-card {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  background: #fff;
-  transition: 0.2s;
-}
-.compact-tabs ::ng-deep .tab {
-  margin-right: 12px;  /* gap between tabs */
-  padding: 6px 12px;   /* smaller tab padding */
-}
-
-.compact-tabs ::ng-deep .tab-link {
-  font-size: 14px;     /* smaller text */
-}
-
-.tab-icon {
-  margin-right: 6px;   /* space between icon and text */
-}
-
-.note-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;  /* space between pin and menu */
-}
-
-.pin {
-  background: transparent !important;
-  border: none !important;
-  padding: 0;
-  cursor: pointer;
-}
-
-.pin-icon {
-  color: #00aaff;   /* sky blue */
-  width: 5px;
-  height: 5px;
-  vertical-align: middle;
-}
-.pin-btn {
-  background: transparent !important;
-  border: none !important;
-  padding: 0;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.pin-icon {
-  color: #00aaff;   /* sky blue */
-  width: 15px;
-  height: 15px;
-  display: inline-block;
-  transition: transform 0.2s ease;
-}
-
-.pin-btn:hover .pin-icon {
-  transform: scale(1.15);
-}
-.note-item {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-}
-
-.note-item button {
-  margin-left: 4px;
-}
-/* src/styles.scss */
-nb-tabset.compact-tabs .tab {
-  margin-left: 80px !important;      /* spacing between tabs */
-  min-width: 0 !important;          /* allow shrinking */
-  flex: 0 0 auto !important;        /* prevent flex:1 stretching */
-}
-
-/* skip margin on first tab */
-nb-tabset.compact-tabs .tab:first-child {
-  margin-left:0px!important;
-}
-
-/* tighten inner padding */
-nb-tabset.compact-tabs .tab .tab-link {
-  padding: 4px 8px !important;
-  line-height: 1.2 !important;
-}
-
-/* if Nebular uses a .tabs wrapper, give it a gap too */
-nb-tabset.compact-tabs .tabs {
-  gap: 8px !important;
+/* ===========================
+   Nebular Tabs - Tight Spacing
+=========================== */
+/* Align tab icon + text */
+/* Align tab icon + text + reduce spacing */
+/* Make the tab header row align left */
+::ng-deep nb-tabset .tabset {
   display: flex !important;
+  justify-content: flex-start !important; /* push tabs to left */
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-bottom: 8px;
 }
 
+/* Control spacing between tabs (reduce gap) */
+::ng-deep nb-tabset .tab {
+  margin-right: 8px !important;  /* smaller space between tabs */
+}
 
+/* Neat icon + text alignment inside each tab */
+::ng-deep nb-tabset .tab-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;         /* icon ↔ text */
+  padding: 6px 8px; /* smaller padding inside */
+}
+/* Tab text style */
+::ng-deep nb-tabset .tab-link span {
+  font-size: 14px;       /* adjust size */
+  font-weight: 400;      /* normal, not bold */
+           /* softer dark gray (instead of harsh black) */
+}
+
+/* Optional: make the active tab stand out subtly */
+::ng-deep nb-tabset .tab.active .tab-link span {
+  font-weight: 500;      /* slightly stronger */
+  color: #1a73e8;        /* your primary color */
+}
 

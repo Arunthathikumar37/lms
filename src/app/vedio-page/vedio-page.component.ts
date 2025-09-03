@@ -31,6 +31,7 @@ selectedIndex = 0;
   attachmentProgress: number[] = [];  // initialize as empty array
   currentAttachmentIndex: number | null = null;
   transcriptSearch: any;
+attachments: any;
 
   get filteredTranscript(): TranscriptLine[] {
     if (!this.lesson?.transcript) return [];
@@ -151,11 +152,13 @@ onTabChanged(event: { tabIndex: number; tabTitle: string }) {
 }
 
 
+panelOpen = false;
 
-  panelOpen = false;
-  togglePanel() {
-    this.panelOpen = !this.panelOpen;
-  }
+togglePanel() {
+  this.panelOpen = !this.panelOpen; // toggle panel state
+}
+
+
 
 
   togglePin(note: any, index: number) {

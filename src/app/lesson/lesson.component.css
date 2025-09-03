@@ -136,101 +136,7 @@
   margin-bottom: 10px;
 }
 
-/* .hint {
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin-top: 4px;
-} */
 
-
-/* Popup header */
-/* .popup-form h2 {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #222b45;
-} */
-
-/* Labels */
-/* .popup-form label {
-  margin-top: 12px;
-  font-weight: 500;
-  font-size: 14px;
-  color: #333;
-  border: none;
-} */
-
-/* Inputs, Selects, Textarea */
-/* .popup-form input,
-.popup-form select,
-.popup-form textarea {
-  margin-top: 6px;
-  padding: 10px 12px;
-  font-size: 14px;
-  border-radius: 0px;
-  border: 1px solid #dcdcdc;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: #f3eded;
-} */
-/* .popup-form input:focus,
-.popup-form select:focus,
-.popup-form textarea:focus {
-  border-color: #3366ff;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(51,102,255,0.15);
-} */
-
-/* File inputs */
-/* .popup-form input[type="file"] {
-  padding: 12px;
-  border: 2px dashed #ccc;
-  border-radius: 0px;
-  text-align: center;
-  cursor: pointer;
-  color: #666;
-  background-color: #fafafa;
-  margin-top: 6px;
-}
-.popup-form input[type="file"]:hover {
-  border-color: #3366ff;
-  background: #f5f7ff;
-} */
-
-/* === Action Buttons === */
-/* .actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-  gap: 12px;
-}
-.actions button[status="success"] {
-  background-color: #3366ff !important;
-  color: #fff !important;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 0px;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-.actions button[status="success"]:hover {
-  background-color: #274bdb !important;
-}
-.actions button[status="basic"] {
-  background: #f7f7f7;
-  border: 1px solid #ccc;
-  color: #333;
-  padding: 8px 20px;
-  border-radius: 0px;
-  font-weight: 500;
-} */
-
-/* === Delete Confirmation Popup === */
-/* lesson.component.css */
-
-/* Container for form actions */
 .actions {
   display: flex;
   gap: 10px;       /* Space between buttons */
@@ -376,51 +282,43 @@ nb-card-body p {
   font-size: 13px;
   color: #666;
 }
-.tiny-icon {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
-  vertical-align: middle;
-  background-color:white;
-  color:rgb(185, 178, 178)
-}
-.tiny-icon1 {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
-  vertical-align: middle;
-  background-color:white;
-  color:#FFAA00;
 
+.doc-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;               /* space between icon & text */
+  padding-left: 12px;     /* <<< space from the left margin */
+}
+
+.doc-text {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* optional: truncate long names */
+}
+
+
+
+/* Footer Actions */
+.icon-only nb-icon {
+  margin: 0 6px; /* space between icons */
+  font-size: 15px; /* optional: adjust size */
+}
+
+.tiny-icon1 {
+ color: #FFAA00; /* green for edit */
 }
 
 .tiny-icon2 {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
-  vertical-align: middle;
-  background-color:white;
-  color:#FF3D71;
-  margin-right: 15px;
-}
-.tiny-icon3 {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
-  vertical-align: middle;
-  background-color:white;
-  color:#8F9BB3;
-}
-.tiny-icon4 {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
-  vertical-align: middle;
-  background-color:white;
-  color:#8F9BB3;
+  color: #f44336; /* red for delete */
 }
 
-/* Footer Actions */
+.tiny-icon3 {
+ color:rgb(185, 178, 178)
+}
+
+
+
 .footer-actions {
   display: flex;
   justify-content: flex-end;
