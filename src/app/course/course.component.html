@@ -157,16 +157,16 @@
 <!-- Delete Confirmation Card -->
 <div class="delete-overlay" *ngIf="pendingDeleteIndex !== null">
   <nb-card class="delete-card">
-    <nb-card-header class="status-danger text-white">
-      ⚠️ Confirm Delete
+    <nb-card-header class="status-danger">
+      Warning
     </nb-card-header>
     <nb-card-body>
-      Are you sure you want to delete
+      Are you sure you want to delete the lesson
       <b>{{ courses[pendingDeleteIndex]?.title }}</b>?
     </nb-card-body>
     <nb-card-footer class="delete-actions">
-      <button nbButton status="basic" (click)="cancelDelete()">Cancel</button>
-      <button nbButton status="danger" (click)="confirmDelete()">Delete</button>
+      <button nbButton status="primary" (click)="cancelDelete()">No</button>
+      <button nbButton status="primary" (click)="confirmDelete()">Yes </button>
     </nb-card-footer>
   </nb-card>
 </div>

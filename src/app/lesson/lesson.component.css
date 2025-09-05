@@ -214,6 +214,13 @@ form > * + * {
   gap: 1rem;                 /* optional: space between buttons */
   margin-top: 1rem;          /* optional: spacing from above content */
 }
+.lessons-container {
+  display: flex;           /* arrange cards in a row */
+  flex-wrap: wrap;         /* wrap to next line if not enough space */
+  gap: 20px;               /* spacing between cards */
+  justify-content: flex-start;  /* left-align cards; change to center if you like */
+  margin-top: 20px;        /* spacing from search/header */
+}
 
 /* === Lessons Grid === */
 .lesson-card {
@@ -418,6 +425,48 @@ button[data-tooltip]::before {
 button[data-tooltip]:hover::after,
 button[data-tooltip]:hover::before {
   opacity: 1;
+}
+.delete-overlay{
+  
+position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Card styling */
+.delete-card {
+width: 450px;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+.delete-actions {
+  display: flex;
+  justify-content: center; /* centers the buttons horizontally */
+  align-items: center;     /* centers them vertically */
+  gap: 40px;                /* adjust this value to reduce or increase space between buttons */
+}
+
+
+.delete-card nb-card-header {
+  font-weight: 600;
+  font-size: 16px;
+  text-align: left;
+
+}
+.delete-card nb-card-body {
+  padding: 20px 15px;
+  font-size: 14px;
+  color: #333;
 }
 
 .breadbtn {

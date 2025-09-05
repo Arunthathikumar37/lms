@@ -194,7 +194,7 @@
 <button nbButton class="icon-only" *ngIf="lesson.type === 'Document'" 
         (click)="openLessonDocument(lesson)"
         nbTooltip="Open Document" nbTooltipStatus="dark" nbTooltipPlacement="top">
-  <nb-icon icon="file-text-outline" class="tiny-icon4"></nb-icon>
+  <nb-icon icon="file-text-outline" class="tiny-icon3"></nb-icon>
 </button>
 
 <button nbButton class="icon-only" 
@@ -217,7 +217,7 @@
 <div class="delete-overlay" *ngIf="showDeleteConfirm">
   <nb-card class="delete-card">
     <nb-card-header class="status-danger text-white">
-      ⚠️ Confirm Delete
+      Warning
     </nb-card-header>
 
     <nb-card-body>
@@ -226,8 +226,8 @@
     </nb-card-body>
 
     <nb-card-footer class="delete-actions">
-      <button nbButton status="basic" (click)="cancelDelete()">Cancel</button>
-      <button nbButton status="danger" (click)="deleteLesson()">Delete</button>
+      <button nbButton status="primary" (click)="cancelDelete()">No</button>
+      <button nbButton status="primary" (click)="deleteLesson()">Yes</button>
     </nb-card-footer>
   </nb-card>
 </div>
