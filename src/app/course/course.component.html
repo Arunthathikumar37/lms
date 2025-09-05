@@ -1,0 +1,156 @@
+<nb-layout>
+  <nb-layout-column>
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      
+<div class="header-actions">
+        <button nbButton status="primary" (click)="addCourse()" class="primary">+ Add Course</button>
+      </div>
+
+      <div class="search-container">
+        <label class="search-label">Filter Courses By :</label>
+        <div class="search-input-wrapper">
+          <input
+            nbInput
+            fullWidth
+            fieldSize="small"
+            placeholder="Search"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="updateFilter()"
+          />
+          <nb-icon icon="search-outline" pack="eva" class="search-icon"></nb-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit Course Popup -->
+    <div class="popup-overlay" *ngIf="showForm">
+  <nb-card class="popup-card">
+    <nb-card-header>
+      <h2>Add New Course</h2>
+    </nb-card-header>
+
+    <nb-card-body>
+      <form [formGroup]="courseForm" (ngSubmit)="saveCourse()" (keydown.enter)="saveCourse()">
+        <!-- Course Image -->
+        <label>Course Image</label><br> <br>
+        <label class="custom-file-upload">
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+          <nb-icon icon="image-outline"></nb-icon>
+          <span class="file-name">
+            {{ courseForm.get('imageFileName')?.value || 'Choose Image' }}
+          </span>
+        </label>
+        <small class="help-text">
+          Supported formats: JPEG, PNG, JPG, GIF (max 5MB)
+        </small>
+
+        <!-- Title -->
+        <label>Title*</label>
+        <input nbInput fullWidth placeholder="Enter course title" formControlName="title" />
+        <div class="error" *ngIf="courseForm.get('title')?.touched && courseForm.get('title')?.invalid">
+          Title is required (min 3 characters).
+        </div>
+
+        <!-- Description -->
+        <label>Description*</label>
+        <textarea
+          nbInput
+          fullWidth
+          rows="3"
+          placeholder="Enter course description"
+          formControlName="description"
+        ></textarea>
+        <div class="error" *ngIf="courseForm.get('description')?.touched && courseForm.get('description')?.invalid">
+          Description is required (min 10 characters).
+        </div>
+
+        <!-- Level -->
+        <label>Level*</label>
+        <nb-select placeholder="Select level" fullWidth fieldSize="small" formControlName="level">
+          <nb-option value="Beginner">Beginner</nb-option>
+          <nb-option value="Intermediate">Intermediate</nb-option>
+          <nb-option value="Advanced">Advanced</nb-option>
+        </nb-select>
+        <div class="error" *ngIf="courseForm.get('level')?.touched && courseForm.get('level')?.invalid">
+          Level is required.
+        </div>
+
+        <!-- Instructor Name -->
+        <label>Instructor Name*</label>
+        <input nbInput fullWidth placeholder="Enter instructor name" formControlName="instructorName" />
+        <div class="error" *ngIf="courseForm.get('instructorName')?.touched && courseForm.get('instructorName')?.invalid">
+          Instructor name is required.
+        </div>
+
+        <!-- Order Index -->
+        <label>Order Index*</label>
+        <input nbInput type="number" fullWidth placeholder="e.g., 1" formControlName="orderIndex" />
+        <div class="error" *ngIf="courseForm.get('orderIndex')?.touched && courseForm.get('orderIndex')?.invalid">
+          Order Index must be a positive number.
+        </div>
+      </form>
+    </nb-card-body>
+
+    <nb-card-footer class="actions">
+      <button nbButton status="basic" type="button" (click)="cancel()">Cancel</button>
+      <button nbButton status="success" type="submit" [disabled]="courseForm.invalid" (click)="saveCourse()">Save</button>
+    </nb-card-footer>
+  </nb-card>
+</div>
+
+
+    <!-- Course Cards -->
+    <div class="course-cards">
+     <nb-card *ngFor="let course of filteredCourses; let i = index" class="course-card">
+
+        <!-- Badge for Level -->
+        <div class="badge" [ngClass]="course.level.toLowerCase()">{{ course.level }}</div>
+
+        <!-- Image -->
+        <nb-card-header>
+          <img *ngIf="course.image" [src]="course.image" class="course-image" />
+        </nb-card-header>
+
+        <!-- Body -->
+        <nb-card-body>
+          <h4>{{ course.title }}</h4>
+          <p>{{ course.description }}</p>
+          <small>Instructor: {{ course.instructorName }}</small>
+        </nb-card-body>
+
+        <!-- Footer -->
+           <nb-card-footer class="card-footer">
+        <div class="icon-only">
+<button nbButton class="icon-only" (click)="goToModules(i)"nbTooltip="view Module" nbTooltipStatus="dark" nbTooltipPlacement="top">
+  <nb-icon icon="book-outline"></nb-icon>
+</button>
+
+      <button nbButton class="icon-only" ghost (click)="editCourse(course,i)"nbTooltip="Edit Course" nbTooltipStatus="dark" nbTooltipPlacement="top">
+        <nb-icon icon="edit-outline" class="tiny-icon1"></nb-icon>
+      </button>
+      <button nbButton class="icon-only" (click)="askDelete(i)"nbTooltip="delete course" nbTooltipStatus="dark" nbTooltipPlacement="top">
+        <nb-icon icon="trash-2-outline" class="tiny-icon2"></nb-icon>
+      </button>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</div>
+
+    <!-- Delete Confirmation -->
+<!-- Delete Confirmation Card -->
+<div class="delete-overlay" *ngIf="pendingDeleteIndex !== null">
+  <nb-card class="delete-card">
+    <nb-card-header class="status-danger text-white">
+      ⚠️ Confirm Delete
+    </nb-card-header>
+    <nb-card-body>
+      Are you sure you want to delete
+      <b>{{ courses[pendingDeleteIndex]?.title }}</b>?
+    </nb-card-body>
+    <nb-card-footer class="delete-actions">
+      <button nbButton status="basic" (click)="cancelDelete()">Cancel</button>
+      <button nbButton status="danger" (click)="confirmDelete()">Delete</button>
+    </nb-card-footer>
+  </nb-card>
+</div>

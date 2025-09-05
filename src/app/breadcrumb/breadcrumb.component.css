@@ -1,0 +1,34 @@
+
+.breadcrumb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.breadcrumb {
+  font-size: 15px;
+  margin: 10px 0;
+
+  a {
+    color: #3b82f6; 
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .active {
+    
+    color: black;
+  }
+}
+.page-header {
+  display: flex;
+  justify-content: space-between; /* left = breadcrumbs, right = button */
+  align-items: center;            /* vertical alignment */
+  margin-bottom: 20px;
+}
+
+
+

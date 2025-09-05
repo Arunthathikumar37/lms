@@ -1,0 +1,209 @@
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.header-actions button {
+  margin-left: 1300px;
+}
+.primary{
+    padding: 5px 14px !important; /* reduce horizontal padding */
+           /* make text smaller */
+  min-width: auto;
+  font-weight: normal
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  background: white;
+  border-radius: 0px;
+  padding: 10px 1100px 10px 10px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding-right: 10px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #f6f3f3;
+  border: 1px solid #ccc;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5a6c7a;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-card {
+  width: 400px;
+  max-width: 95%;
+  border-radius: 0px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.error {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+/* ================= Module Cards ================= */
+/* ================= Module Cards ================= */
+.module-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 10px 10px;
+  
+}
+
+.module-card {
+  border-radius: 0px;
+  overflow: hidden;
+  background: #f7f9fc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+    position: relative;
+  border-radius: 0px !important;
+  overflow: hidden;
+  background: #f7f9fc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease-in-out;
+    width: 280px;      
+  height: 200px; 
+}
+.module-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Header */
+.module-card nb-card-header {
+  background: #fff;
+  font-size: 8px;
+  font-weight: 020;
+  color: #1e2a78;
+  padding: 12px 16px;
+}
+
+/* Body */
+.module-card nb-card-body {
+  background: white;
+  padding: 15px;
+}
+.module-card nb-card-body p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 8px;
+}
+.module-card nb-card-body small {
+  color: #666;
+  font-size: 13px;
+}
+
+/* Footer */
+.module-card nb-card-footer.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 111px;
+  padding: 10px 12px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  margin-left: 0px;
+
+}
+
+.icon-only nb-icon {
+  margin: 0 6px; /* space between icons */
+  font-size: 15px; /* optional: adjust size */
+}
+
+.tiny-icon1 {
+ color: #FFAA00; /* green for edit */
+}
+
+.tiny-icon2 {
+  color: #f44336; /* red for delete */
+}
+
+.tiny-icon3 {
+ color:rgb(185, 178, 178)
+}
+button[nbButton].icon-only {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.icon-only nb-icon {
+  margin: 0 32px; /* spacing between icons */
+  font-size: 10px; /* increase size if too small */
+}
+
+.delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Card styling */
+.delete-card {
+  width: 350px;
+  text-align: center;
+  border-radius: 10px;
+}
+.delete-actions {
+  display: flex;
+  justify-content: space-around;
+}

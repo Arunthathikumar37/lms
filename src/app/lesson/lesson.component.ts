@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, FormArray } from '@angular/forms';
 
 export type LessonData = {
   type: 'Video' | 'Document';
   image: string | null;
-  imageFileName?: string;       // ✅ new
+  imageFileName?: string;
   document: string | null;
-  documentFileName?: string;    // ✅ new
+  documentFileName?: string;
   videoUrl: string | null;
-  videoFileName?: string;       // ✅ new
+  videoFileName?: string;
   title: string;
   description: string;
   attachments?: { name: string; data: string }[];
@@ -20,103 +21,123 @@ export type LessonData = {
   notes?: { text: string; time?: string }[];
 };
 
-
-
-  
-
-
 @Component({
   selector: 'app-lesson',
   templateUrl: './lesson.component.html',
-  styleUrls: ['./lesson.component.css'],
-  
+  styleUrls: ['./lesson.component.css']
 })
-export class LessonComponent {
-  showForm = false; // popup visibility
+export class LessonComponent implements OnInit {
+  showForm = false;
   showDeleteConfirm = false;
   editingLesson = false;
   searchTerm: string = '';
-  
 
-  // ✅ Use static array to share lessons across components
   static lessons: LessonData[] = [];
   lessons: LessonData[] = LessonComponent.lessons;
-
   filteredLessons: LessonData[] = [];
-  lessonData: LessonData = this.getEmptyLesson();
   lessonToDelete: LessonData | null = null;
-selectedItem: any;
 
-  constructor(private router: Router) {}
+  lessonForm!: FormGroup;
+
+  constructor(private router: Router, private fb: FormBuilder) {}
+
   ngOnInit() {
-    this.updateFilter(); // ✅ initialize filteredLessons
+    this.initForm();
+    this.updateFilter();
   }
 
-  // Return empty lesson
-  private getEmptyLesson(): LessonData {
-    return {
-      type: 'Document',
-      image: null,
-      document: null,
-      videoUrl: null,
-      title: '',
-      description: '',
-      attachments: [],
-      summary: '',
-      duration: null,
-      orderIndex: this.lessons.length + 1
+  // Initialize Reactive Form
+  initForm() {
+    this.lessonForm = this.fb.group(
+      {
+        type: ['Document', Validators.required],
+        title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+        description: ['', [Validators.required, Validators.minLength(10)]],
+        summary: [''],
+        duration: [null, [Validators.required, Validators.min(1), Validators.max(300)]],
+        orderIndex: [this.lessons.length + 1, [Validators.required, Validators.min(1)]],
+        image: [null],
+        imageFileName: [''],
+        document: [null],
+        documentFileName: [''],
+        videoUrl: [null],
+        videoFileName: [''],
+        attachments: this.fb.array([])
+      },
+      { validators: this.typeFileValidator() }
+    );
+  }
+
+  // Custom validator: ensure video or document uploaded based on type
+  typeFileValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const type = control.get('type')?.value;
+      const video = control.get('videoUrl')?.value;
+      const document = control.get('document')?.value;
+
+      if (type === 'Video' && !video) return { requiredVideo: true };
+      if (type === 'Document' && !document) return { requiredDocument: true };
+      return null;
     };
   }
 
-  // Open popup to add lesson
+  // FormArray for attachments
+  get attachments(): FormArray {
+    return this.lessonForm.get('attachments') as FormArray;
+  }
+
+  // Open Add Lesson popup
   addLesson() {
     this.showForm = true;
     this.editingLesson = false;
-    this.lessonData = this.getEmptyLesson();
+    this.lessonForm.reset({ type: 'Document', orderIndex: this.lessons.length + 1 });
+    this.attachments.clear();
   }
 
-  // Cancel popup
   cancel() {
     this.showForm = false;
   }
 
   // Save lesson
-saveLesson() {
-  if (!this.lessonData.title.trim()) return;
+  saveLesson() {
+    if (this.lessonForm.invalid) return;
 
-  // Set type
-  if (this.lessonData.videoUrl) this.lessonData.type = 'Video';
-  else this.lessonData.type = 'Document';
+    const lessonData: LessonData = { ...this.lessonForm.value };
+    lessonData.details = lessonData.description;
 
-  // ← ADD THIS LINE
-  this.lessonData.details = this.lessonData.description;
+    if (!this.editingLesson) {
+      this.lessons.push(lessonData);
+      LessonComponent.lessons = this.lessons;
+    } else {
+      const index = this.lessons.findIndex(l => l.orderIndex === lessonData.orderIndex);
+      if (index > -1) this.lessons[index] = lessonData;
+    }
 
-  if (!this.editingLesson) {
-    this.lessons.push({ ...this.lessonData });
-    LessonComponent.lessons = this.lessons; // update static array
-  } else {
-    const index = this.lessons.findIndex(l => l.orderIndex === this.lessonData.orderIndex);
-    if (index > -1) this.lessons[index] = { ...this.lessonData };
+    this.updateFilter();
+    this.showForm = false;
   }
 
-  this.updateFilter();
-  this.showForm = false;
-}
-
+  // Search filter
   updateFilter() {
     const term = this.searchTerm.toLowerCase();
     this.filteredLessons = this.lessons.filter(
       l =>
         l.title.toLowerCase().includes(term) ||
-        (l.description?.toLowerCase() || '').includes(term)
+        (l.title?.toLowerCase() || '').includes(term)
     );
   }
 
   // Edit lesson
   editLesson(lesson: LessonData) {
-    this.lessonData = { ...lesson };
     this.editingLesson = true;
     this.showForm = true;
+    this.lessonForm.patchValue({ ...lesson });
+    this.attachments.clear();
+    if (lesson.attachments) {
+      lesson.attachments.forEach(att => {
+        this.attachments.push(this.fb.group({ name: att.name, data: att.data }));
+      });
+    }
   }
 
   // Delete lesson
@@ -133,84 +154,50 @@ saveLesson() {
   deleteLesson() {
     if (this.lessonToDelete) {
       this.lessons = this.lessons.filter(l => l !== this.lessonToDelete);
-      LessonComponent.lessons = this.lessons; // ✅ update static array
+      LessonComponent.lessons = this.lessons;
       this.updateFilter();
     }
     this.cancelDelete();
   }
 
-  // ✅ Navigate to video page using ID (static array)
-playLessonVideo(lesson: LessonData) {
-  if (!lesson.videoUrl) {
-    alert('No video uploaded for this lesson!');
-    return;
+  // Navigate to video page
+  playLessonVideo(lesson: LessonData) {
+    if (!lesson.videoUrl) {
+      alert('No video uploaded for this lesson!');
+      return;
+    }
+    this.router.navigate(['/video', lesson.orderIndex]);
   }
-
-  // Navigate to the video page with lesson orderIndex
-  this.router.navigate(['/video', lesson.orderIndex]);
-}
-
-
 
   // Navigate to document page
-// Navigate to document page
-openLessonDocument(lesson: LessonData) {
-  if (!lesson.document) {
-    alert('No document uploaded for this lesson!');
-    return;
+  openLessonDocument(lesson: LessonData) {
+    if (!lesson.document) {
+      alert('No document uploaded for this lesson!');
+      return;
+    }
+    this.router.navigate(['/document', lesson.orderIndex]);
   }
 
-  // ✅ Navigate to document route with lesson orderIndex
-  this.router.navigate(['/document', lesson.orderIndex]);
-}
+  // Handle file uploads
+  onFileSelected(event: any, type: 'image' | 'document' | 'video' | 'attachments') {
+    const files: FileList = event.target.files;
+    if (!files || files.length === 0) return;
 
-
-
-  // Handle file uploads (Base64 preview)
-// Add/Update inside LessonComponent class
-onFileSelected(event: any, type: 'image' | 'document' | 'video' | 'attachments') {
-  const files: FileList = event.target.files;
-  if (!files || files.length === 0) return;
-
-  if (type === 'image' || type === 'document' || type === 'video') {
-    const file = files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (type === 'image') {
-        this.lessonData.image = reader.result as string;
-        this.lessonData.imageFileName = file.name;   // ✅ store filename
-      } 
-      else if (type === 'document') {
-        this.lessonData.document = reader.result as string;
-        this.lessonData.documentFileName = file.name; // ✅ store filename
-        this.lessonData.videoUrl = null;
-      } 
-      else if (type === 'video') {
-        this.lessonData.videoUrl = reader.result as string;
-        this.lessonData.videoFileName = file.name;   // ✅ store filename
-        this.lessonData.document = null;
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-
-  else if (type === 'attachments') {
-    if (!this.lessonData.attachments) this.lessonData.attachments = [];
-
-    Array.from(files).forEach(file => {
+    if (type === 'image' || type === 'document' || type === 'video') {
+      const file = files[0];
       const reader = new FileReader();
       reader.onload = () => {
-        this.lessonData.attachments!.push({
-          name: file.name,        // ✅ store attachment filename
-          data: reader.result as string
-        });
+        if (type === 'image') this.lessonForm.patchValue({ image: reader.result, imageFileName: file.name });
+        if (type === 'document') this.lessonForm.patchValue({ document: reader.result, documentFileName: file.name, videoUrl: null });
+        if (type === 'video') this.lessonForm.patchValue({ videoUrl: reader.result, videoFileName: file.name, document: null });
       };
       reader.readAsDataURL(file);
-    });
+    } else if (type === 'attachments') {
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => this.attachments.push(this.fb.group({ name: file.name, data: reader.result }));
+        reader.readAsDataURL(file);
+      });
+    }
   }
-}
-
-
-
-  
 }

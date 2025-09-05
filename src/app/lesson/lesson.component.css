@@ -14,10 +14,15 @@
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 10px;
-  padding-top: 10px;
+  padding-top:0px;
   
 }
-
+.primary{
+    padding: 5px 14px !important; /* reduce horizontal padding */
+           /* make text smaller */
+  min-width: auto;
+  font-weight: normal
+}
 /* Use ::ng-deep to penetrate Nebular component styles if needed */
 .header-actions button {
  
@@ -195,38 +200,42 @@ form > * + * {
 }
 
 /* === Lessons Grid === */
-.lessons-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 20px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-/* === Lesson Card === */
 .lesson-card {
   position: relative;
-  border-radius: 0px !important;
+  border-radius: 0; /* sharp corners */
   overflow: hidden;
   background: #f7f9fc;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   transition: transform 0.2s ease-in-out;
+  width: 280px;      /* fixed width for rectangle */
+  height: 380px;     /* fixed height for rectangle */
+  display: flex;
+  flex-direction: column;
 }
+
 .lesson-card:hover {
   transform: translateY(-4px);
 }
+
 .lesson-card nb-card-header {
-  padding: 0;           /* remove default padding */
-  height: 150px;        /* set desired card header height */
-  overflow: hidden;     /* hide overflow if image is larger */
+  padding: 0;
+  height: 200px;        /* header takes half the card height */
+  overflow: hidden;
 }
 
 .lesson-card nb-card-header img.lesson-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;    /* image covers entire header area */
-  display: block;       /* remove inline spacing issues */
+  object-fit: cover;
+  display: block;
+}
+
+.lesson-card nb-card-body {
+  padding: 10px 15px;   /* add some padding for text */
+  flex: 1;              /* take remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 

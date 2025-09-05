@@ -1,0 +1,321 @@
+/* ================= Dashboard Header ================= */
+
+
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.header-actions button {
+  margin-left: 1300px;
+}
+.primary{
+    padding: 5px 14px !important; /* reduce horizontal padding */
+           /* make text smaller */
+  min-width: auto;
+  font-weight: normal
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  background: white;
+  border-radius: 0px;
+  padding: 10px 1100px 10px 10px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding-right: 10px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #f6f3f3;
+  border: 1px solid #ccc;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5a6c7a;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+/* ================= Popup Overlay & Form ================= */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  
+}
+
+.popup-card {
+  width: 400px;
+  max-height: 93vh;
+  overflow-y: auto;
+  border-radius: 0px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.popup-card nb-card-body label,
+.popup-card nb-card-body input,
+.popup-card nb-card-body textarea,
+.popup-card nb-card-body nb-select,
+.popup-card nb-card-body .custom-file-upload,
+.popup-card nb-card-body small {
+  
+  margin-bottom: 4px; /* gap between fields */
+}
+
+
+
+
+
+/* File upload */
+.custom-file-upload {
+  display: inline-flex;        /* keeps everything in one row */
+  align-items: center;         /* vertically center icon + text */
+  gap: 6px;
+  cursor: pointer;
+
+  background-color: var(--button-primary-background-color, #3366ff);
+  color: var(--button-primary-text-color, #fff);
+
+  padding: 4px 12px;
+  border-radius:4px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+
+  width: 150px;                /* fixed width */
+  margin-left: 110px;
+  overflow: hidden; 
+  margin-left: 90px;           /* prevent overflow */
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload .file-name {
+  flex: 1;                     /* take available space */
+  overflow: hidden;
+  text-overflow: ellipsis;     /* show "…" when too long */
+  white-space: nowrap;         /* stay in one line */
+}
+
+
+.custom-file-upload:hover {
+  background-color: var(--button-primary-hover-background-color, #274bdb);
+}
+
+.custom-file-upload input[type="file"] {
+  display: none; /* hide real file input */
+}
+
+.help-text {
+  display: block;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+/* Error messages */
+.error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: -0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+
+
+/* Action buttons */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* ================= Course Cards ================= */
+.course-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 30px;
+  margin: 20px 10px;
+}
+
+/* === Course Card === */
+.course-card {
+  position: relative;
+  border-radius: 0px !important;
+  overflow: hidden;
+  background: #f7f9fc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease-in-out;
+}
+.course-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Card Header with Image */
+.course-card nb-card-header {
+  padding: 0;
+  height: 150px;
+  overflow: hidden;
+}
+.course-card nb-card-header img.course-image {
+  width: calc(100% - 24px); /* reduce width so right margin shows */
+  height:100%;             /* keep natural height */
+  object-fit: cover;
+  display: block;
+
+  margin: 12px;             /* gap on all sides */
+  margin-right: 12px;       /* explicitly add right gap */
+}
+
+
+/* Badge for Levels */
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #3366ff;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 0;
+  text-transform: capitalize;
+}
+.badge.beginner { background: #051fdf; }
+.badge.intermediate { background: #28a745; }
+.badge.advanced { background: #dc3545; }
+
+/* Card Body */
+.course-card nb-card-body {
+  background: white;
+  padding: 15px;
+  border-radius: 0px;
+    width: 280px;      /* fixed width for rectangle */
+  height: 380px; 
+}
+.course-card nb-card-body h5,
+.course-card nb-card-body h4 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222b45;
+}
+.course-card nb-card-body p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* Instructor / Meta */
+.course-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+}
+
+/* Card Footer */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+/* Scoped only to Delete Dialog */
+
+button[nbButton].icon-only {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.icon-only nb-icon {
+  margin: 0 6px; /* space between icons */
+  font-size: 15px; /* optional: adjust size */
+}
+
+.tiny-icon1 {
+ color: #FFAA00; /* green for edit */
+}
+
+.tiny-icon2 {
+  color: #f44336; /* red for delete */
+}
+
+.tiny-icon3 {
+ color:rgb(185, 178, 178)
+}
+.icon-only nb-icon {
+  margin: 0 25px;   /* increase space between icons */
+  font-size: 12px;  /* reduce icon size */
+}
+/* Full-screen overlay */
+.delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Card styling */
+.delete-card {
+  width: 350px;
+  text-align: center;
+  border-radius: 10px;
+}
+.delete-actions {
+  display: flex;
+  justify-content: space-around;
+}

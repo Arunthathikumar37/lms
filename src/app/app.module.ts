@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { LessonComponent } from './lesson/lesson.component';
 import { VedioPageComponent } from './vedio-page/vedio-page.component';     // ✅ Correct
 import { DocumentPageComponent } from './document-page/document-page.component'; // ✅ Correct
+import { AppRoutingModule } from './app-routing.module';
 
 // Nebular imports
 import {
@@ -27,29 +28,27 @@ import {
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 import { RouterModule, Routes } from '@angular/router';
+import { CourseComponent } from './course/course.component';
+import { ModuleComponent } from './module/module.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 
-const routes: Routes = [
-  { path: '', component: LessonComponent },         
-  { path: 'video/:id', component: VedioPageComponent },     
-  { path: 'document/:id', component: DocumentPageComponent }, 
-  { path: '**', redirectTo: '' }                   
-];
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LessonComponent,
     VedioPageComponent,     
-    DocumentPageComponent, 
+    DocumentPageComponent, CourseComponent, ModuleComponent, BreadcrumbComponent, 
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(routes),
-
+    ReactiveFormsModule,AppRoutingModule,
+   
     // Nebular Modules
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,

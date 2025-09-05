@@ -1,0 +1,126 @@
+ <nb-layout>
+  <nb-layout-column>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+
+
+      <div class="header-actions">
+        <button nbButton status="primary" (click)="addModule()" class="primary">+ Add Module</button>
+      </div>
+
+      <div class="search-container">
+        <label class="search-label">Filter Modules By :</label>
+        <div class="search-input-wrapper">
+          <input
+            nbInput
+            fullWidth
+            fieldSize="small"
+            placeholder="Search"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="updateFilter()"
+          />
+          <nb-icon icon="search-outline" pack="eva" class="search-icon"></nb-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit Module Popup -->
+<div class="popup-overlay" *ngIf="showForm">
+  <nb-card class="form-card">
+    <nb-card-header>
+      <h2>Add / Edit Module</h2>
+    </nb-card-header>
+
+    <nb-card-body>
+      <form [formGroup]="moduleForm" (ngSubmit)="saveModule()"(keydown.enter)="saveModule()">
+
+        <!-- Title -->
+        <div class="form-group">
+          <label>Title*</label>
+          <input nbInput fullWidth placeholder="Enter title" formControlName="title" />
+          <div class="error" *ngIf="moduleForm.get('title')?.touched && moduleForm.get('title')?.invalid">
+            Title is required (min 3 characters).
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label>Description*</label>
+          <textarea
+            nbInput
+            fullWidth
+            rows="3"
+            placeholder="Enter description"
+            formControlName="description"
+          ></textarea>
+          <div class="error" *ngIf="moduleForm.get('description')?.touched && moduleForm.get('description')?.invalid">
+            Description is required (min 10 characters).
+          </div>
+        </div>
+
+        <!-- Order Index -->
+        <div class="form-group">
+          <label>Order Index*</label>
+          <input nbInput type="number" fullWidth placeholder="e.g., 1" formControlName="orderIndex" />
+          <div class="error" *ngIf="moduleForm.get('orderIndex')?.touched && moduleForm.get('orderIndex')?.invalid">
+            Must be a positive number.
+          </div>
+        </div>
+
+      </form>
+    </nb-card-body>
+
+    <nb-card-footer class="actions">
+      <button nbButton status="basic" type="button" (click)="cancel()">Cancel</button>
+      <button nbButton status="success" type="submit" [disabled]="moduleForm.invalid" (click)="saveModule()">Save</button>
+    </nb-card-footer>
+  </nb-card>
+</div>
+
+
+    <!-- Module Cards -->
+    <div class="module-cards">
+      <nb-card *ngFor="let module of filteredModules; let i = index" class="module-card">
+        <nb-card-header>
+          <h4>{{ module.title }}</h4>
+        </nb-card-header>
+        <nb-card-body>
+          <p>{{ module.description }}</p>
+          <small>Index: {{ module.orderIndex }}</small>
+        </nb-card-body>
+        <nb-card-footer class="card-footer">
+          <div class="icon-only">
+            <button nbButton class="icon-only" (click)="goToLessons(module, i)"nbTooltip="view Lesson" nbTooltipStatus="dark" nbTooltipPlacement="top">
+              <nb-icon icon="book-outline"></nb-icon>
+            </button>
+            <button nbButton class="icon-only" ghost (click)="editModule(module,i)"nbTooltip="Edit Module" nbTooltipStatus="dark" nbTooltipPlacement="top">
+              <nb-icon icon="edit-outline" class="tiny-icon1"></nb-icon>
+            </button>
+            <button nbButton class="icon-only" (click)="askDelete(i)"nbTooltip="delete Module" nbTooltipStatus="dark" nbTooltipPlacement="top">
+              <nb-icon icon="trash-2-outline" class="tiny-icon2"></nb-icon>
+            </button>
+          </div>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <!-- Delete Confirmation Dialog -->
+    <div class="delete-overlay" *ngIf="pendingDeleteIndex !== null">
+      <nb-card class="delete-card">
+        <nb-card-header class="status-danger text-white">
+          ⚠️ Confirm Delete
+        </nb-card-header>
+        <nb-card-body>
+          Are you sure you want to delete <b>{{ modules[pendingDeleteIndex]?.title }}</b>?
+        </nb-card-body>
+        <nb-card-footer class="delete-actions">
+          <button nbButton status="basic" (click)="cancelDelete()">Cancel</button>
+          <button nbButton status="danger" (click)="confirmDelete()">Delete</button>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+</nb-layout>
