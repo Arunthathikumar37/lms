@@ -3,10 +3,13 @@
 
     <!-- Dashboard Header -->
     <div class="dashboard-header">
-
-
+<div class="breadbtn"> 
+  <div class="breadcrumbs">
+    <app-breadcrumb></app-breadcrumb>   <!-- ❌ Breadcrumb items stack vertically -->
+  </div>
       <div class="header-actions">
         <button nbButton status="primary" (click)="addModule()" class="primary">+ Add Module</button>
+      </div>
       </div>
 
       <div class="search-container">
@@ -92,7 +95,7 @@
         <nb-card-footer class="card-footer">
           <div class="icon-only">
             <button nbButton class="icon-only" (click)="goToLessons(module, i)"nbTooltip="view Lesson" nbTooltipStatus="dark" nbTooltipPlacement="top">
-              <nb-icon icon="book-outline"></nb-icon>
+              <nb-icon icon="book-outline" class="tiny-icon3"></nb-icon>
             </button>
             <button nbButton class="icon-only" ghost (click)="editModule(module,i)"nbTooltip="Edit Module" nbTooltipStatus="dark" nbTooltipPlacement="top">
               <nb-icon icon="edit-outline" class="tiny-icon1"></nb-icon>

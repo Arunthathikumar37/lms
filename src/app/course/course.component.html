@@ -2,10 +2,18 @@
   <nb-layout-column>
     <!-- Dashboard Header -->
     <div class="dashboard-header">
-      
-<div class="header-actions">
-        <button nbButton status="primary" (click)="addCourse()" class="primary">+ Add Course</button>
-      </div>
+<div class="breadbtn"> 
+  <div class="breadcrumbs">
+    <app-breadcrumb></app-breadcrumb>   <!-- ❌ Breadcrumb items stack vertically -->
+  </div>
+
+  <div class="header-actions">
+    <button nbButton status="primary" (click)="addCourse()" class="primary">
+      + Add Course
+    </button>
+  </div>
+</div>
+
 
       <div class="search-container">
         <label class="search-label">Filter Courses By :</label>
@@ -21,7 +29,7 @@
           <nb-icon icon="search-outline" pack="eva" class="search-icon"></nb-icon>
         </div>
       </div>
-    </div>
+    </div>  
 
     <!-- Add/Edit Course Popup -->
     <div class="popup-overlay" *ngIf="showForm">
@@ -44,6 +52,14 @@
         <small class="help-text">
           Supported formats: JPEG, PNG, JPG, GIF (max 5MB)
         </small>
+
+<img
+  *ngIf="editIndex !== null && courses[editIndex]?.image"
+  [src]="courses[editIndex].image"
+  alt="Course Image Preview"
+  class="preview-image"
+/>
+
 
         <!-- Title -->
         <label>Title*</label>
@@ -123,7 +139,7 @@
            <nb-card-footer class="card-footer">
         <div class="icon-only">
 <button nbButton class="icon-only" (click)="goToModules(i)"nbTooltip="view Module" nbTooltipStatus="dark" nbTooltipPlacement="top">
-  <nb-icon icon="book-outline"></nb-icon>
+  <nb-icon icon="book-outline" class="tiny-icon3"></nb-icon>
 </button>
 
       <button nbButton class="icon-only" ghost (click)="editCourse(course,i)"nbTooltip="Edit Course" nbTooltipStatus="dark" nbTooltipPlacement="top">

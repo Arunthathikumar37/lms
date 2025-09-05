@@ -1,46 +1,79 @@
+::ng-deep nb-layout-column {
+  padding-top:10px !important;  /* remove inner padding */
+  margin-top:10px !important;  
+
+}
+::ng-deep nb-layout-column {
+  padding-left: 0 !important;   /* remove inner left padding */
+  padding-right: 0 !important;  /* remove inner right padding */
+  margin-left: 10px !important;    /* remove outer left margin */
+  margin-right: 10px !important;   /* remove outer right margin */
+  
+}
+
 .dashboard-header {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* stack breadbtn + search-container vertically */
+  gap: 12px;              /* spacing between rows */
   margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding-top: 10px;
+  margin-top: 2px;  
+  padding: 0px;
+  margin-top: 1px;
+  
 }
 
-.header-actions button {
-  margin-left: 1300px;
+
+/* Breadcrumb + button row */
+.breadbtn {
+  display: flex;
+  justify-content: space-between; /* breadcrumb left, button right */
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
-.primary{
-    padding: 5px 14px !important; /* reduce horizontal padding */
-           /* make text smaller */
+
+.breadcrumbs-wrapper {
+  display: inline-flex; /* keep breadcrumb horizontal */
+  align-items: center;
+}
+
+/* Button styling */
+.header-actions button.primary {
+  padding: 5px 14px !important; /* reduce horizontal padding */
   min-width: auto;
-  font-weight: normal
+  font-weight: normal;
 }
 
+/* ================= Search Bar ================= */
 .search-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 15px;
-  background: white;
-  border-radius: 0px;
-  padding: 10px 1100px 10px 10px;
+  gap: 8px;            
+  padding: 10px; 
+    /* remove left/right padding */
+ margin-top: 1px;            /* remove external margin */
+  background: #fff;
+  border-radius: 4px;
+  width: 100%;           
+  min-width: 500px;      
+  box-sizing: border-box; /* ensures padding is included in width */
 }
+
 
 .search-input-wrapper {
   position: relative;
-  flex: 1;
+  width: 12%;           /* input takes 20% of container */
+  min-width: 150px;     /* optional: prevents input from being too small */
 }
 
 .search-input-wrapper input {
-  width: 100%;
-  padding-right: 10px;
-  height: 30px;
-  border-radius: 5px;
-  background-color: #f6f3f3;
-  border: 1px solid #ccc;
+  width: 100%;          /* fill the wrapper (20% of container) */
+  padding: 6px 30px 6px 10px;
+  height: 32px;
+  border-radius: 4px;
+
+ 
+  box-sizing: border-box;
 }
 
 .search-icon {
@@ -48,7 +81,7 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #5a6c7a;
+  
   width: 14px;
   height: 14px;
   pointer-events: none;
@@ -162,15 +195,15 @@
 }
 
 .tiny-icon1 {
- color: #FFAA00; /* green for edit */
+ color: #FBCD6E; /* green for edit */
 }
 
 .tiny-icon2 {
-  color: #f44336; /* red for delete */
+  color: #DB5F7B; /* red for delete */
 }
 
 .tiny-icon3 {
- color:rgb(185, 178, 178)
+ color:#5C70C7
 }
 button[nbButton].icon-only {
   background: transparent !important;
@@ -206,4 +239,44 @@ button[nbButton].icon-only {
 .delete-actions {
   display: flex;
   justify-content: space-around;
+}
+.breadbtn {
+  display: flex;
+  justify-content: space-between; /* breadcrumbs left, button right */
+  align-items: center;            /* vertical alignment */
+  width: 100%;
+}
+
+.breadcrumbs {
+  flex: 1;   /* keeps breadcrumbs on the left */
+}
+.breadbtn {
+  display: flex;
+  /* breadcrumb left, button right */
+  align-items: center;            /* vertical alignment */
+  gap: 12px;     
+          /* optional spacing */
+}
+
+/* Ensure breadcrumbs component behaves correctly inside flex */
+.breadcrumbs-wrapper {
+  display: inline-flex;           /* force horizontal layout */
+  align-items: center;
+}
+
+/* Inside breadcrumb component, force horizontal items */
+::ng-deep app-breadcrumb .breadcrumbs-nav,
+::ng-deep app-breadcrumb .breadcrumb-list,
+::ng-deep app-breadcrumb .breadcrumb-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+}
+
+/* Anchors and spans inside breadcrumb */
+::ng-deep app-breadcrumb a,
+::ng-deep app-breadcrumb span {
+  display: inline-block !important;
+  white-space: nowrap !important;
 }

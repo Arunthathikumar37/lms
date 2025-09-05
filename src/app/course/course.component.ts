@@ -85,8 +85,10 @@ confirmDelete() {
 // === Edit Course ===
 editCourse(course: any, index: number) {
   this.showForm = true;
-  this.editIndex = index;  // ✅ store which course is being edited
+  this.editIndex = index; 
+  this.courseForm.reset(); // ✅ store which course is being edited
   this.courseForm.patchValue(course);
+  
 }
 
 

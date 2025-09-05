@@ -1,78 +1,94 @@
-/* === Global Page Styles === */
+::ng-deep nb-layout-column {
+  padding-top:10px !important;  /* remove inner padding */
+  margin-top:10px !important;  
 
+}
+::ng-deep nb-layout-column {
+  padding-left: 0 !important;   /* remove inner left padding */
+  padding-right: 0 !important;  /* remove inner right padding */
+  margin-left: 10px !important;    /* remove outer left margin */
+  margin-right: 10px !important;   /* remove outer right margin */
+  
+}
 
-
-/* === Global Container for Margin/Padding === */
 
 
 /* === Dashboard Header === */
 .dashboard-header {
   display: flex;
-   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* stack breadbtn + search-container vertically */
+  gap: 12px;              /* spacing between rows */
   margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding-top:0px;
+  margin-top: 2px;  
+  padding: 0px;
+  margin-top: 1px;
   
 }
-.primary{
-    padding: 5px 14px !important; /* reduce horizontal padding */
-           /* make text smaller */
-  min-width: auto;
-  font-weight: normal
-}
-/* Use ::ng-deep to penetrate Nebular component styles if needed */
-.header-actions button {
- 
- margin-left: 1300px;
+
+
+/* Breadcrumb + button row */
+.breadbtn {
+  display: flex;
+  justify-content: space-between; /* breadcrumb left, button right */
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
+.breadcrumbs-wrapper {
+  display: inline-flex; /* keep breadcrumb horizontal */
+  align-items: center;
+}
+
+/* Button styling */
+.header-actions button.primary {
+  padding: 5px 14px !important; /* reduce horizontal padding */
+  min-width: auto;
+  font-weight: normal;
+}
+
+/* ================= Search Bar ================= */
 .search-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 15px;
-  background:white;   /* light gray background */
-  border-radius: 0px;
-  padding: 10px 1100px 10px 10px;
+  gap: 8px;            
+  padding: 10px; 
+    /* remove left/right padding */
+ margin-top: 1px;            /* remove external margin */
+  background: #fff;
+  border-radius: 4px;
+  width: 100%;           
+  min-width: 500px;      
+  box-sizing: border-box; /* ensures padding is included in width */
 }
 
-/* Label with white background */
 
-
-/* Input wrapper */
 .search-input-wrapper {
   position: relative;
-  flex: 1; /* takes remaining space */
+  width: 12%;           /* input takes 20% of container */
+  min-width: 150px;     /* optional: prevents input from being too small */
 }
 
 .search-input-wrapper input {
-  width: 100%;
-  padding-right: 10px; /* space for icon */
-  height: 30px;
-  border-radius: 5px;
-  background-color: #f6f3f3;
-   border: 1px solid #ccc;
+  width: 100%;          /* fill the wrapper (20% of container) */
+  padding: 6px 30px 6px 10px;
+  height: 32px;
+  border-radius: 4px;
 
+ 
+  box-sizing: border-box;
 }
 
-/* Icon inside input */
 .search-icon {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #5a6c7a;
-
-  /* 🔥 Control size here */
+  
   width: 14px;
   height: 14px;
-
   pointer-events: none;
 }
-
 
 
 
@@ -228,6 +244,7 @@ form > * + * {
   height: 100%;
   object-fit: cover;
   display: block;
+  min-height: 10px; 
 }
 
 .lesson-card nb-card-body {
@@ -253,16 +270,16 @@ form > * + * {
   position: absolute;
   top: 0;
   right: 0;
-  background: #3366ff;
+  
   color: white;
   font-size: 12px;
   font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 0;
+  padding: 2px 8px;
+  border-radius: 4PX;
   text-transform: capitalize;
 }
-.badge.video { background: #ff3d71; }
-.badge.document { background: #ff3d71; }
+.badge.video { background: #FC3565; }
+.badge.document { background: #FC3565; }
 
 /* Card Body */
 nb-card-body {
@@ -312,18 +329,20 @@ nb-card-body p {
 .icon-only nb-icon {
   margin: 0 6px; /* space between icons */
   font-size: 15px; /* optional: adjust size */
+  width: 18px;
+  height: 18px;
 }
 
 .tiny-icon1 {
- color: #FFAA00; /* green for edit */
+ color: #FBCD6E; /* green for edit */
 }
 
 .tiny-icon2 {
-  color: #f44336; /* red for delete */
+  color: #DB5F7B; /* red for delete */
 }
 
 .tiny-icon3 {
- color:rgb(185, 178, 178)
+ color:#A7ACBB
 }
 
 
@@ -401,3 +420,38 @@ button[data-tooltip]:hover::before {
   opacity: 1;
 }
 
+.breadbtn {
+  display: flex;
+  /* breadcrumb left, button right */
+  align-items: center;            /* vertical alignment */
+  gap: 12px;     
+          /* optional spacing */
+}
+
+/* Ensure breadcrumbs component behaves correctly inside flex */
+.breadcrumbs-wrapper {
+  display: inline-flex;           /* force horizontal layout */
+  align-items: center;
+}
+
+/* Inside breadcrumb component, force horizontal items */
+::ng-deep app-breadcrumb .breadcrumbs-nav,
+::ng-deep app-breadcrumb .breadcrumb-list,
+::ng-deep app-breadcrumb .breadcrumb-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+}
+
+/* Anchors and spans inside breadcrumb */
+::ng-deep app-breadcrumb a,
+::ng-deep app-breadcrumb span {
+  display: inline-block !important;
+  white-space: nowrap !important;
+}
+::ng-deep app-breadcrumb a {
+  text-decoration: none !important;  /* removes underline */
+  color: inherit;                     /* keeps the text color same as normal */
+  cursor: pointer;                    /* optional: shows pointer on hover */
+}

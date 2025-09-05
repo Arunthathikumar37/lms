@@ -1,49 +1,80 @@
 /* ================= Dashboard Header ================= */
+::ng-deep nb-layout-column {
+  padding-top:10px !important;  /* remove inner padding */
+  margin-top:10px !important;  
 
+}
+::ng-deep nb-layout-column {
+  padding-left: 0 !important;   /* remove inner left padding */
+  padding-right: 0 !important;  /* remove inner right padding */
+  margin-left: 10px !important;    /* remove outer left margin */
+  margin-right: 10px !important;   /* remove outer right margin */
+  
+}
 
 .dashboard-header {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* stack breadbtn + search-container vertically */
+  gap: 12px;              /* spacing between rows */
   margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding-top: 10px;
+  margin-top: 2px;  
+  padding: 0px;
+  margin-top: 1px;
+  
 }
 
-.header-actions button {
-  margin-left: 1300px;
+
+/* Breadcrumb + button row */
+.breadbtn {
+  display: flex;
+  justify-content: space-between; /* breadcrumb left, button right */
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
-.primary{
-    padding: 5px 14px !important; /* reduce horizontal padding */
-           /* make text smaller */
+
+.breadcrumbs-wrapper {
+  display: inline-flex; /* keep breadcrumb horizontal */
+  align-items: center;
+}
+
+/* Button styling */
+.header-actions button.primary {
+  padding: 5px 14px !important; /* reduce horizontal padding */
   min-width: auto;
-  font-weight: normal
+  font-weight: normal;
 }
 
+/* ================= Search Bar ================= */
 .search-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 15px;
-  background: white;
-  border-radius: 0px;
-  padding: 10px 1100px 10px 10px;
+  gap: 8px;            
+  padding: 10px; 
+    /* remove left/right padding */
+ margin-top: 1px;            /* remove external margin */
+  background: #fff;
+  border-radius: 4px;
+  width: 100%;           
+  min-width: 500px;      
+  box-sizing: border-box; /* ensures padding is included in width */
 }
+
 
 .search-input-wrapper {
   position: relative;
-  flex: 1;
+  width: 12%;           /* input takes 20% of container */
+  min-width: 150px;     /* optional: prevents input from being too small */
 }
 
 .search-input-wrapper input {
-  width: 100%;
-  padding-right: 10px;
-  height: 30px;
-  border-radius: 5px;
-  background-color: #f6f3f3;
-  border: 1px solid #ccc;
+  width: 100%;          /* fill the wrapper (20% of container) */
+  padding: 6px 30px 6px 10px;
+  height: 32px;
+  border-radius: 4px;
+
+ 
+  box-sizing: border-box;
 }
 
 .search-icon {
@@ -51,11 +82,13 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #5a6c7a;
+  
   width: 14px;
   height: 14px;
   pointer-events: none;
 }
+
+
 
 /* ================= Popup Overlay & Form ================= */
 .popup-overlay {
@@ -194,19 +227,21 @@
 
 /* Card Header with Image */
 .course-card nb-card-header {
-  padding: 0;
-  height: 150px;
-  overflow: hidden;
+  padding: 8px;          /* smaller padding */
+  background: #fff;
+  min-height: 130px;      /* reduce height */
 }
-.course-card nb-card-header img.course-image {
-  width: calc(100% - 24px); /* reduce width so right margin shows */
-  height:100%;             /* keep natural height */
-  object-fit: cover;
-  display: block;
 
-  margin: 12px;             /* gap on all sides */
-  margin-right: 12px;       /* explicitly add right gap */
+.course-card nb-card-header img.course-image {
+  width: 100%;
+  height: 130px;          /* same as header height */
+  object-fit: cover;     /* keeps image proportional */
+  display: block;
+  border-radius: 4px;
 }
+
+
+
 
 
 /* Badge for Levels */
@@ -216,15 +251,15 @@
   right: 0;
   background: #3366ff;
   color: white;
-  font-size: 12px;
+  font-size: 9px;
   font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 0;
-  text-transform: capitalize;
+  padding: 0px 3px;
+  border-radius: 4px;
+  text-transform: uppercase;
 }
-.badge.beginner { background: #051fdf; }
-.badge.intermediate { background: #28a745; }
-.badge.advanced { background: #dc3545; }
+.badge.beginner { background:  #0190FF; }
+.badge.intermediate { background: #12C87E; }
+.badge.advanced { background: #FF376C; }
 
 /* Card Body */
 .course-card nb-card-body {
@@ -281,15 +316,15 @@ button[nbButton].icon-only {
 }
 
 .tiny-icon1 {
- color: #FFAA00; /* green for edit */
+ color: #FBCD6E; /* green for edit */
 }
 
 .tiny-icon2 {
-  color: #f44336; /* red for delete */
+  color: #DB5F7B; /* red for delete */
 }
 
 .tiny-icon3 {
- color:rgb(185, 178, 178)
+ color:#5C70C7
 }
 .icon-only nb-icon {
   margin: 0 25px;   /* increase space between icons */
@@ -319,3 +354,47 @@ button[nbButton].icon-only {
   display: flex;
   justify-content: space-around;
 }
+/* Flex container for breadcrumbs + button */
+.breadbtn {
+  display: flex;
+  /* breadcrumb left, button right */
+  align-items: center;            /* vertical alignment */
+  gap: 12px;     
+          /* optional spacing */
+}
+
+/* Ensure breadcrumbs component behaves correctly inside flex */
+.breadcrumbs-wrapper {
+  display: inline-flex;           /* force horizontal layout */
+  align-items: center;
+}
+
+/* Inside breadcrumb component, force horizontal items */
+::ng-deep app-breadcrumb .breadcrumbs-nav,
+::ng-deep app-breadcrumb .breadcrumb-list,
+::ng-deep app-breadcrumb .breadcrumb-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+}
+
+/* Anchors and spans inside breadcrumb */
+::ng-deep app-breadcrumb a,
+::ng-deep app-breadcrumb span {
+  display: inline-block !important;
+  white-space: nowrap !important;
+}
+::ng-deep app-breadcrumb a {
+  text-decoration: none !important;  /* removes underline */
+  color: inherit;                     /* keeps the text color same as normal */
+  cursor: pointer;                    /* optional: shows pointer on hover */
+}
+.preview-image {
+  max-width: 200px;
+  max-height: 150px;
+  display: block;       /* ensures margin auto works */
+  margin: 10px auto 0;  /* top 10px, auto left/right to center */
+  border-radius: 4px;
+}
+

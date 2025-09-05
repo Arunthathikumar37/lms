@@ -3,10 +3,13 @@
     
     <!-- Dashboard Header -->
     <div class="dashboard-header">
-     
+     <div class="breadbtn"> 
+  <div class="breadcrumbs">
+    <app-breadcrumb></app-breadcrumb>   <!-- ❌ Breadcrumb items stack vertically -->
+  </div>
       
       <div class="header-actions">
-      <button nbButton status="primary" (click)="addLesson()" class="primary">+ Add lesson</button></div>
+      <button nbButton status="primary" (click)="addLesson()" class="primary">+ Add lesson</button></div></div>
 
       <div class="search-container">
         <label class="search-label">Filter Lessons By :</label>
@@ -197,7 +200,7 @@
 <button nbButton class="icon-only" 
         (click)="editLesson(lesson)"
         nbTooltip="Edit Lesson" nbTooltipStatus="dark" nbTooltipPlacement="top">
-  <nb-icon icon="edit-2-outline" class="tiny-icon1"></nb-icon>
+  <nb-icon icon="edit-outline" class="tiny-icon1"></nb-icon>
 </button>
 
 <button nbButton class="icon-only" 
