@@ -9,6 +9,7 @@ import { LessonComponent } from './lesson/lesson.component';
 import { VedioPageComponent } from './vedio-page/vedio-page.component';     // ✅ Correct
 import { DocumentPageComponent } from './document-page/document-page.component'; // ✅ Correct
 import { AppRoutingModule } from './app-routing.module';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 // Nebular imports
 import {
@@ -47,6 +48,7 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    NgxDocViewerModule,
     ReactiveFormsModule,AppRoutingModule,
    
     // Nebular Modules

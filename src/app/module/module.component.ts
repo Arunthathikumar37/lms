@@ -83,7 +83,7 @@ this.modules.push(newModule);
   // === Filter ===
   updateFilter() {
     const term = this.searchTerm.toLowerCase();
-    this.filteredModules = this.modules.filter(
+    this. filteredModules= this.modules.filter(
       m =>
         m.title.toLowerCase().includes(term) ||
         (m.description?.toLowerCase() || '').includes(term)

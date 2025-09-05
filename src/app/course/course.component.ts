@@ -16,6 +16,7 @@ export class CourseComponent implements OnInit {
   showForm = false;
   courseForm!: FormGroup;
   editIndex: number | null = null;
+  editcourse=false
 
 
 
@@ -67,12 +68,16 @@ confirmDelete() {
   }
 }
 
-
+clearSearch() {
+  this.searchTerm = '';
+  // Optionally, reset your filtered courses here
+}
 
   // === Form Actions ===
   addCourse() {
     this.showForm = true;
     this.courseForm.reset();
+   
   }
 
   cancel() {
@@ -90,6 +95,7 @@ editCourse(course: any, index: number) {
   this.courseForm.patchValue(course);
   
 }
+
 
 
 // === Save Course ===

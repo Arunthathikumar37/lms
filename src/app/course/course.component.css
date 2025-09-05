@@ -126,6 +126,18 @@
   
   margin-bottom: 4px; /* gap between fields */
 }
+.popup-card nb-card-header {
+  padding: 4px 8px;
+  min-height: 30px;
+  font-size: 10px;
+}
+
+.popup-card nb-card-header h2{
+ 
+  font-size: 21px;
+}
+
+
 
 
 
@@ -311,8 +323,10 @@ button[nbButton].icon-only {
   padding: 0 !important;
 }
 .icon-only nb-icon {
-  margin: 0 6px; /* space between icons */
-  font-size: 15px; /* optional: adjust size */
+  margin: 0 10px; /* space between icons */
+  font-size: 15px;
+  width:17px;
+  height: 17px; /* optional: adjust size */
 }
 
 .tiny-icon1 {
@@ -427,5 +441,25 @@ width: 450px;
   display: block;       /* ensures margin auto works */
   margin: 10px auto 0;  /* top 10px, auto left/right to center */
   border-radius: 4px;
+}
+
+.no-lessons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  color: #6c757d;
+  background-color: #F5F7FB; 
+  border-radius: 4px;           
+  padding: 20px;
+    
+  box-shadow: none !important;             
+  text-align: center;
+}
+
+.no-lessons-container nb-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 

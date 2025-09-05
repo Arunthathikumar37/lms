@@ -70,7 +70,7 @@
                nbInput
                fullWidth
                fieldSize="small"
-               accept="application/pdf,.doc,.docx"
+               accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt"
                (change)="onFileSelected($event, 'document')" />
         <span class="doc-text">
           <nb-icon icon="file-text-outline"></nb-icon>
@@ -233,5 +233,11 @@
 </div>
 
 
-  </nb-layout-column>
+
+
+<div *ngIf="filteredLessons.length === 0;" class="no-lessons-container">
+      <nb-icon icon="book-outline" pack="eva"></nb-icon>
+      <p>No lessons available.</p>
+    </div>
+      </nb-layout-column>
 </nb-layout>

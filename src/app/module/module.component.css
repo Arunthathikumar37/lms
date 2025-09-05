@@ -104,7 +104,16 @@
   max-width: 95%;
   border-radius: 0px;
 }
+.form-card nb-card-header {
+  padding: 4px 8px;
+  min-height: 30px;
+  font-size: 10px;
+}
 
+.form-card nb-card-header h2{
+ 
+  font-size: 21px;
+}
 .form-group {
   margin-bottom: 16px;
 }
@@ -181,17 +190,19 @@
 .module-card nb-card-footer.card-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 111px;
+  gap: 130px;
   padding: 10px 12px;
   background: #fff;
   border-top: 1px solid #eee;
   margin-left: 0px;
-
+align-items: center;
 }
 
 .icon-only nb-icon {
   margin: 0 6px; /* space between icons */
-  font-size: 15px; /* optional: adjust size */
+  font-size: 15px; 
+    width:17px;
+  height: 17px;/* optional: adjust size */
 }
 
 .tiny-icon1 {
@@ -298,4 +309,23 @@ width: 450px;
 ::ng-deep app-breadcrumb span {
   display: inline-block !important;
   white-space: nowrap !important;
+}
+.no-lessons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  color: #6c757d;
+  background-color: #F5F7FB; 
+  border-radius: 4px;           
+  padding: 20px;
+    
+  box-shadow: none !important;             
+  text-align: center;
+}
+
+.no-lessons-container nb-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
 }

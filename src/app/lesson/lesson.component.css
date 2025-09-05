@@ -336,8 +336,8 @@ nb-card-body p {
 .icon-only nb-icon {
   margin: 0 6px; /* space between icons */
   font-size: 15px; /* optional: adjust size */
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
 }
 
 .tiny-icon1 {
@@ -503,4 +503,23 @@ width: 450px;
   text-decoration: none !important;  /* removes underline */
   color: inherit;                     /* keeps the text color same as normal */
   cursor: pointer;                    /* optional: shows pointer on hover */
+}
+.no-lessons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  color: #6c757d;
+  background-color: #F5F7FB; 
+  border-radius: 4px;           
+  padding: 20px;
+    
+  box-shadow: none !important;             
+  text-align: center;
+}
+
+.no-lessons-container nb-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
 }
